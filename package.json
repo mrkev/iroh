@@ -1,0 +1,20 @@
+{
+  "name": "Iroh",
+  "version": "0.0.0",
+  "description": "Dining calendars for RedAPI",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "es6-promise": "^1.0.0",
+    "icalendar": "^0.6.5",
+    "moment": "^2.7.0",
+    "obender": "^0.1.1",
+    "q-io": "^1.11.2",
+    "request": "^2.37.0",
+    "request-promise": "0.0.4"
+  }
+}
