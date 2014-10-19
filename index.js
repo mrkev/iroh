@@ -70,8 +70,8 @@ module.exports = (function () {
 				end		   		: Date.parse(vevt.DTEND[0].value),
 				rrule     	: vevt.RRULE ? vevt.RRULE[0].value : undefined,
 				rexcept			: vevt.EXDATE ? vevt.EXDATE[0].value : undefined,
-				timestamp		: vevt.DTSTAMP[0].value,
-				uid 				: vevt.UID[0].value,
+				// timestamp		: vevt.DTSTAMP[0].value,
+				// uid 				: vevt.UID[0].value,
 				// updated 		: vevt.CREATED[0].value,
 				// modified		: vevt['LAST-MODIFIED'][0].value,
 				description : vevt.DESCRIPTION[0].value,
@@ -86,7 +86,7 @@ module.exports = (function () {
 				evt.rrule = {
 					weekdays	: evt.rrule.BYDAY,
 					frequency : evt.rrule.FREQ,
-					end				: evt.rrule.UNTIL
+					end				: Date.parse(evt.rrule.UNTIL)
 				}
 			}
 			
