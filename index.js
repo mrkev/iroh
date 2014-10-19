@@ -121,7 +121,7 @@ module.exports = (function () {
 })();
 
 
-module.exports.query('okenshields').then(console.dir)
+// module.exports.query('okenshields').then(console.dir)
 
 // workiCal(response.body));
 
