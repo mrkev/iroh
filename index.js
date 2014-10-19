@@ -66,20 +66,28 @@ module.exports = (function () {
 		for (var i = data.components.VEVENT.length - 1; i >= 0; i--) {
 			vevt = data.components.VEVENT[i].properties
 			evt = {
-				start	 	: vevt.DTSTART[0].value,
-				end		   	: vevt.DTEND[0].value,
+				start	 			: Date.parse(vevt.DTSTART[0].value),
+				end		   		: Date.parse(vevt.DTEND[0].value),
 				rrule     	: vevt.RRULE ? vevt.RRULE[0].value : undefined,
-				rexcept		: vevt.EXDATE ? vevt.EXDATE[0].value : undefined,
-				timestamp	: vevt.DTSTAMP[0].value,
-				uid 		: vevt.UID[0].value,
-				updated 	: vevt.CREATED[0].value,
-				modified	: vevt['LAST-MODIFIED'][0].value,
+				rexcept			: vevt.EXDATE ? vevt.EXDATE[0].value : undefined,
+				timestamp		: vevt.DTSTAMP[0].value,
+				uid 				: vevt.UID[0].value,
+				// updated 		: vevt.CREATED[0].value,
+				// modified		: vevt['LAST-MODIFIED'][0].value,
 				description : vevt.DESCRIPTION[0].value,
-				location	: vevt.LOCATION[0].value,
-				revisions	: parseInt(vevt.SEQUENCE[0].value),
-				status		: vevt.STATUS[0].value,
-				summary		: vevt.SUMMARY[0].value,
-				transparent : vevt.TRANSP[0].value
+				// location		: vevt.LOCATION[0].value,
+				// revisions		: parseInt(vevt.SEQUENCE[0].value),
+				status			: vevt.STATUS[0].value,
+				// summary			: vevt.SUMMARY[0].value,
+				// transparent : vevt.TRANSP[0].value
+			}
+
+			if (evt.rrule) {
+				evt.rrule = {
+					weekdays	: evt.rrule.BYDAY,
+					frequency : evt.rrule.FREQ,
+					end				: evt.rrule.UNTIL
+				}
 			}
 			
 			cal.events[i] = evt
@@ -112,6 +120,8 @@ module.exports = (function () {
 	return new DiningCalendarSource(require('./cals.json'));
 })();
 
+
+module.exports.query('okenshields').then(console.dir)
 
 // workiCal(response.body));
 
