@@ -78,7 +78,7 @@ module.exports = (function () {
 				// location		: vevt.LOCATION[0].value,
 				// revisions		: parseInt(vevt.SEQUENCE[0].value),
 				status			: vevt.STATUS[0].value,
-				// summary			: vevt.SUMMARY[0].value,
+				summary			: vevt.SUMMARY[0].value,
 				// transparent : vevt.TRANSP[0].value
 			}
 
@@ -121,7 +121,7 @@ module.exports = (function () {
 })();
 
 
-// module.exports.query('okenshields').then(console.dir)
+module.exports.query('okenshields').then(console.dir)
 
 // workiCal(response.body));
 
