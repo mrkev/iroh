@@ -83,12 +83,16 @@ module.exports = (function () {
 
       // rrule
       if (vevt.RRULE) {
+        var rrule = vevt.RRULE[0].value;
+
         evt.rrule = {
-          weekdays  : vevt.RRULE[0].value.BYDAY,
-          frequency : vevt.RRULE[0].value.FREQ,
+          frequency : rrule.FREQ,
         };
 
-        if (vevt.RRULE[0].value.UNTIL) evt.rrule.end =  Date.parse(format_yo(vevt.RRULE[0].value.UNTIL));
+        if (rrule.BYDAY) evt.rrule.weekdays =  rrule.BYDAY;
+        if (rrule.UNTIL) evt.rrule.end      =  Date.parse(format_yo(rrule.UNTIL));
+        if (rrule.COUNT) evt.rrule.count    =  parseInt(rrule.COUNT);
+
       }
 
       // rexcept
