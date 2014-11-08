@@ -96,7 +96,9 @@ module.exports = (function () {
       }
 
       // rexcept
-      if (vevt.EXDATE) evt.rexcept = vevt.EXDATE[0].value
+      if (vevt.EXDATE) {
+        evt.rexcept = Date.parse(vevt.EXDATE[0].value)
+      }
       
       cal.events[i] = evt;
     }
