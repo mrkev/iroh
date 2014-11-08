@@ -1,7 +1,7 @@
-var iroh = require('./index')
+'use strict';
+/* global require, console */
+var iroh = require('./index');
 
 iroh.getJSON('north_star').then(function (data) {
-  // data.events.forEach(function (x) {
-  //   console.log(x.rrule)
-  // });
-});
+  console.dir(data);
+}).catch(console.trace);

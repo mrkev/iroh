@@ -69,8 +69,6 @@ module.exports = (function () {
       var evt = {
         start       : Date.parse(vevt.DTSTART[0].value),
         end         : Date.parse(vevt.DTEND[0].value),
-        rrule       : vevt.RRULE ? vevt.RRULE[0].value : undefined,
-        rexcept     : vevt.EXDATE ? vevt.EXDATE[0].value : undefined,
         // timestamp    : vevt.DTSTAMP[0].value,
         // uid        : vevt.UID[0].value,
         // updated    : vevt.CREATED[0].value,
@@ -83,18 +81,18 @@ module.exports = (function () {
         // transparent : vevt.TRANSP[0].value
       };
 
-
-
-      if (evt.rrule && evt.rrule !== undefined && evt.rrule !== null) {
-        console.dir(evt.rrule)
-
+      // rrule
+      if (vevt.RRULE) {
         evt.rrule = {
-          weekdays  : evt.rrule.BYDAY,
-          frequency : evt.rrule.FREQ,
-          end       : Date.parse(format_yo(evt.rrule.UNTIL))
+          weekdays  : vevt.RRULE[0].value.BYDAY,
+          frequency : vevt.RRULE[0].value.FREQ,
         };
 
+        if (vevt.RRULE[0].value.UNTIL) evt.rrule.end =  Date.parse(format_yo(vevt.RRULE[0].value.UNTIL));
       }
+
+      // rexcept
+      if (vevt.EXDATE) evt.rexcept = vevt.EXDATE[0].value
       
       cal.events[i] = evt;
     }
@@ -135,11 +133,11 @@ module.exports = (function () {
 
 // 20130827T150000Z -> 2013-08-27T15:00:00Z
 var format_yo = function (a) {
-  return a.substr(0,  4)  + '-' 
-       + a.substr(4,  2)  + '-'
-       + ((a.length > 12) ? 
-                 a.substr(6,  5) + ':'
-               + a.substr(11, 2) + ':'
-               + a.substr(13) : a.substr(6));
-}
+  return a.substr(0,  4)  + '-' +
+         a.substr(4,  2)  + '-' + 
+         ((a.length > 12) ? 
+                 a.substr(6,  5) + ':' +
+                 a.substr(11, 2) + ':' + 
+                 a.substr(13) : a.substr(6));
+};
 
