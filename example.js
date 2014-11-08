@@ -3,7 +3,7 @@
 var iroh = require('./index');
 
 iroh.getJSON('north_star').then(function (data) {
-  //console.dir (data.events)
+  console.dir (JSON.stringify(data.events))
   // data.events.forEach(function (evt) {
   //   console.log(evt)
   // });
