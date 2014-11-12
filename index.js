@@ -101,7 +101,7 @@ module.exports = (function () {
 
       // rexcept
       if (vevt.EXDATE) {
-        evt.rexcept = Date.parse(vevt.EXDATE[0].value)
+        evt.rexcept = Date.parse(vevt.EXDATE[0].value.toString())
       }
       
       cal.events[i] = evt;
