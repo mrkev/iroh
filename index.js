@@ -1,8 +1,9 @@
-'use strict';
+  'use strict';
 /* global require, console, module */
 var rp        = require('request-promise');
 var Promise   = require('es6-promise').Promise;
 var parsecal  = require('icalendar').parse_calendar;
+var locdb     = require('./locations.json');
 
 module.exports = (function () {
   function DiningCalendarSource(datasrc) {
@@ -33,6 +34,9 @@ module.exports = (function () {
 
             try {
               var data = icalchurner(response);
+
+              if (locdb[location]) data['coordinates'] = locdb[location];
+
               self.data[location] = data;
 
               resolve(data);
