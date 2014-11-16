@@ -1,5 +1,5 @@
   'use strict';
-/* global require, console, module */
+/* global require, module */
 var rp        = require('request-promise');
 var Promise   = require('es6-promise').Promise;
 var parsecal  = require('icalendar').parse_calendar;

@@ -1,14 +1,15 @@
 {
   "name": "Iroh",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Dining calendars for RedAPI",
-  "main": "index.js",
+  "main": "iroh.js",
   "scripts": {
     "test": "mocha"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "coffee-script": "^1.8.0",
     "es6-promise": "^1.0.0",
     "icalendar": "^0.7.1",
     "request-promise": "0.0.4"
