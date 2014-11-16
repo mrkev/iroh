@@ -13,5 +13,12 @@
     "es6-promise": "^1.0.0",
     "icalendar": "^0.7.1",
     "request-promise": "0.0.4"
+  },
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "chai-as-promised": "^4.1.1",
+    "gulp-mocha": "^1.1.1",
+    "mocha": "^2.0.1",
+    "should": "^4.3.0"
   }
 }
