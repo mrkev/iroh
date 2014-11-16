@@ -4,7 +4,7 @@
   "description": "Dining calendars for RedAPI",
   "main": "iroh.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha --compilers coffee:coffee-script/register --reporter nyan"
   },
   "author": "",
   "license": "MIT",
@@ -17,7 +17,6 @@
   "devDependencies": {
     "chai": "^1.10.0",
     "chai-as-promised": "^4.1.1",
-    "gulp-mocha": "^1.1.1",
     "mocha": "^2.0.1",
     "should": "^4.3.0"
   }
