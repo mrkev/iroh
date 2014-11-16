@@ -6,6 +6,8 @@
   "scripts": {
     "test": "mocha --compilers coffee:coffee-script/register --reporter nyan"
   },
+  "repository" : { "type" : "git", 
+                   "url" : "https://github.com/mrkev/Iroh.git"},
   "author": "",
   "license": "MIT",
   "dependencies": {

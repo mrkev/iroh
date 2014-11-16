@@ -62,18 +62,22 @@ module.exports = new Iroh(require('./calendars.json'))
 
 icalchurner = (ical) ->
   data = parsecal(ical)
-  
+
+  delete data['calendar']
+  console.log(data)
+
   # Note: Trying to return the data as is wont work. 
   # I'm guessing it does into an infinite loop becasue
   # data contains circular referece ({ calendar: [Circular] ... })
   
   # Get general calendar information
   cal =
-    timezone: data.properties["X-WR-TIMEZONE"][0].value
-    events: []
-    name: data.properties["X-WR-CALNAME"][0].value
-    description: data.properties["X-WR-CALDESC"][0].value
-    method: data.properties.METHOD[0].value
+    events          : []
+    timezone        : data.properties["X-WR-TIMEZONE"][0].value
+    name            : data.properties["X-WR-CALNAME"][0].value
+    description     : data.properties["X-WR-CALDESC"][0].value
+    updated         : (new Date()).valueOf();
+    # method        : data.properties["METHOD"][0].value
 
   
   # Loop through and get event's info
