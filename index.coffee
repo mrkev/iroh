@@ -29,6 +29,7 @@ class Iroh
     self = this
     return Promise.resolve(dining: Object.keys(@caldb)) if not location_id
     return Promise.resolve(null) if not self.caldb[location_id]
+    return Promise.resolve(@data[location_id]) unless @data[location_id] == undefined
     
     url = self.caldb[location_id].icalendar
     new Promise((resolve, reject) ->
