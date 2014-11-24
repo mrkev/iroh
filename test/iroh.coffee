@@ -16,9 +16,12 @@ describe 'Iroh instance', ->
     iroh.getJSON().then((data) -> data.dining).should.eventually.be.an("array").with.length.above(0); 
 
   it 'should return a valid object when a valid id', ->
-    expected_keys = ["name", "description", "method", \
-                     "coordinates", "timezone", "events"]
+    expected_keys = ["name", "description", \
+                     "coordinates", "timezone", \
+                     "events", "updated"]
     iroh.getJSON("north_star").then((data) ->
+      console.log Object.keys(data).sort().join(','), expected_keys.sort().join(',')
+
       Object.keys(data).sort().join('') is expected_keys.sort().join('')
     ).should.eventually.equal(true) 
   
