@@ -33,7 +33,7 @@ class Iroh
     url = self.caldb[location_id].icalendar
     new Promise((resolve, reject) ->
 
-      rp(url).then (response) ->
+      rp(url).then((response) ->
         try
           data = icalchurner(response)
           data["coordinates"] = self.caldb[location_id].coordinates \
@@ -43,8 +43,14 @@ class Iroh
         catch error
           reject error
         return
-      return
-    )
+      
+      ).catch((err) -> 
+        error = new Error "Couldn't load calendar #{location_id}. Error: #{err}"
+        error.name = err.name
+        throw error
+      )
+    ) 
+    
 
   getJSON : (location) ->
     if not @data[location]
@@ -64,7 +70,6 @@ icalchurner = (ical) ->
   data = parsecal(ical)
 
   delete data['calendar']
-  console.log(data)
 
   # Note: Trying to return the data as is wont work. 
   # I'm guessing it does into an infinite loop becasue
