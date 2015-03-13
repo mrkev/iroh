@@ -6,14 +6,18 @@
   "scripts": {
     "test": "mocha --compilers coffee:coffee-script/register --reporter nyan"
   },
-  "repository" : { "type" : "git", 
-                   "url" : "https://github.com/mrkev/Iroh.git"},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mrkev/Iroh.git"
+  },
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "cheerio": "^0.18.0",
     "coffee-script": "^1.8.0",
     "es6-promise": "^1.0.0",
     "icalendar": "^0.7.1",
+    "request": "^2.53.0",
     "request-promise": "0.0.4"
   },
   "devDependencies": {
