@@ -4,7 +4,7 @@ chai.should()
 expect = chai.expect
 
 describe 'Iroh instance', ->
-  iroh = require '../index.coffee'
+  iroh = require '../index.js'
   
   it 'should have a calendar database', ->
     expect(iroh.caldb).to.exist
