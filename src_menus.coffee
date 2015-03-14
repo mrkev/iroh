@@ -67,22 +67,22 @@ class MenuManager
   #                    - risley_dining
   #                    - 104west
   #                    - okenshields
-  fetch : (date, period, loc, should_refresh, callback) ->
+  fetch : (date, period, location, should_refresh, callback) ->
     
     # Alow for straight-up ids
-    if typeof loc is 'string'
-      loc = calendars[loc].menu_id
+    if typeof location is 'string'
+      loc = calendars[location].menu_id
 
     # No menu available.
     if loc is null
       console.log('No menu available for that location');
-      callback(null, period, loc)
+      callback(null, period, location)
 
     # period + midnight of date + location + remove whitespace
-    key = (period + date.setHours(0,0,0,0) + loc).replace(/\s/g, '')
+    key = (period + date.setHours(0,0,0,0) + location).replace(/\s/g, '')
     
     if @cache[key] != undefined && !should_refresh
-      callback(@cache[key], period, loc)
+      callback(@cache[key], period, location)
       return
 
     request.post({
@@ -119,7 +119,7 @@ class MenuManager
       @cache[key] = menuItems
       
       # done.
-      callback(menuItems, period, lol_goback[loc])
+      callback(menuItems, period, location)
     ).bind(this))
 
     return null
@@ -162,9 +162,11 @@ class MenuManager
       meals.forEach (meal) ->
         promises.push(self.get(today(), meal, location, do_refresh))
 
+    console.log 'ordering by', key_dim
     # Reduce...
     return Promise.all(promises).then (results) ->
       console.log 'ra DUCE'      
+      
       # ...with locations as keys
       if key_dim is self.dim_locations()
         return results.reduce((prev, curr) ->
