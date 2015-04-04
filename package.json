@@ -1,6 +1,6 @@
 {
   "name": "Iroh",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Dining calendars for RedAPI",
   "main": "iroh.js",
   "scripts": {
