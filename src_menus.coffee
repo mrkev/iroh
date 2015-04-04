@@ -141,7 +141,7 @@ class MenuManager
   # Gets all menus in the specified (meal, location) coordinate ranges.
   #
   # @param meals        array of meals to query for
-  # @param locatiosn    array of locations to query for
+  # @param locations    array of locations to query for
   # @param key_dim      dimension to reduce on. values from this dimension
   #                     will be used as top-level key
   # @param do_refresh   Overwrite cache

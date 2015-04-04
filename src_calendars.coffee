@@ -1,6 +1,24 @@
 rp        = require("request-promise")
 Promise   = require("es6-promise").Promise
 parsecal  = require("icalendar").parse_calendar
+RRule     = require('rrule').RRule
+timespan  = require('timespan')
+
+require 'datejs'
+
+dow = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"]
+rruleday = {
+  "MO":RRule.MO
+  "TU":RRule.TU
+  "WE":RRule.WE
+  "TH":RRule.TH
+  "FR":RRule.FR
+  "SA":RRule.SA
+  "SU":RRule.SU
+}
+
+
+typeIsArray = Array.isArray || ( value ) -> return {}.toString.call( value ) is '[object Array]'
 
 ###
 # Iroh
@@ -37,8 +55,9 @@ class Iroh
       rp(url).then((response) ->
         try
           data = icalchurner(response)
+          data['location_id'] = location_id
           data["coordinates"] = self.caldb[location_id].coordinates \
-                              if self.caldb[location_id].coordinates
+                             if self.caldb[location_id].coordinates
           self.data[location_id] = data
           resolve data
         catch error
@@ -60,6 +79,80 @@ class Iroh
       Promise.resolve @data[location]
 
 
+  date_range : (start, end) ->
+
+    start = Date.parse start # Start date
+    end   = Date.parse end   # End date
+    
+    return {
+      s : start,
+      e : end
+      _type : 'date_range'
+    }
+
+
+  ## 
+  # Gets all menus in the specified (meal, location) coordinate ranges.
+  #
+  # @param locations    array of locations to query for
+  # @return Promise to massive object. lol.
+  get_events : (locations, days) ->
+    self = this
+
+    ## Setup our date ranges
+
+    # Single day -> Array of days
+    if not typeIsArray(days) and days._type is undefined
+      days = [days]
+    
+    # Array of days -> Array of date ranges
+    if typeIsArray(days)
+      days = days.map (d) -> 
+        date_range =
+          s : start_of(Date.parse d)
+          e : (Date.parse d).add(1).days()
+        return date_range
+      
+      console.log 'for each day, get the thing'
+      return Promise.resolve([]);
+
+    # Date range -> Array of date ranges
+    if days._type is 'date_range'
+      days = [days]
+
+
+    ## Get our calendars
+
+    locations = locations.map (loc) -> self.getJSON(loc)
+
+    results = {}
+
+    return Promise.all(locations).then((res) ->
+      
+      res.forEach (loc) ->
+        
+        events = loc.events
+        loc_id = loc.location_id
+  
+        rendered = []
+        days.forEach (range) -> 
+          try
+            rendered = rendered.concat(render_calendar(events, range.s, range.e))
+          catch e
+            console.trace e
+
+  
+        results[loc_id] = rendered
+      
+      return results
+    )
+
+    .catch (err) ->
+      console.trace err
+
+
+
+
 module.exports = new Iroh(require('./calendars.json'))
 
 
@@ -68,7 +161,14 @@ module.exports = new Iroh(require('./calendars.json'))
 ###
 
 icalchurner = (ical) ->
-  data = parsecal(ical)
+
+  try
+    data = parsecal(ical)
+
+  catch error
+    console.log('bro')
+    console.trace error
+    return null
 
   delete data['calendar']
 
@@ -91,12 +191,15 @@ icalchurner = (ical) ->
 
   while i >= 0
     vevt = data.components.VEVENT[i].properties
+
+    # console.log(Date.parse(vevt.DTSTART[0].value), Date.parse(vevt.DTEND[0].value))
+
     evt =
       start         : Date.parse(vevt.DTSTART[0].value)
       end           : Date.parse(vevt.DTEND[0].value)
-      description   : vevt.DESCRIPTION[0].value
-      status        : vevt.STATUS[0].value
       summary       : vevt.SUMMARY[0].value
+      # status        : vevt.STATUS[0].value
+      # description   : vevt.DESCRIPTION[0].value
       # timestamp   : vevt.DTSTAMP[0].value
       # uid         : vevt.UID[0].value
       # updated     : vevt.CREATED[0].value
@@ -106,11 +209,11 @@ icalchurner = (ical) ->
       # transparent : vevt.TRANSP[0].value
     
     if vevt.RRULE
-      rrule = vevt.RRULE[0].value
-      evt.rrule = frequency: rrule.FREQ
-      evt.rrule.weekdays = rrule.BYDAY                    if rrule.BYDAY
-      evt.rrule.end = Date.parse(format_yo(rrule.UNTIL))  if rrule.UNTIL
-      evt.rrule.count = parseInt(rrule.COUNT)             if rrule.COUNT
+      rrule              = vevt.RRULE[0].value
+      evt.rrule          = frequency: rrule.FREQ
+      evt.rrule.weekdays = rrule.BYDAY.split(",")                if rrule.BYDAY
+      evt.rrule.end      = Date.parse(format_yo(rrule.UNTIL))    if rrule.UNTIL
+      evt.rrule.count    = parseInt(rrule.COUNT)                 if rrule.COUNT
     
     if vevt.EXDATE
       evt.rexcept = Date.parse(vevt.EXDATE[0].value.toString()) 
@@ -130,55 +233,70 @@ format_yo = (a) ->
     else a.substr(6)))
 
 
+
+
+
 ##
 # @param[cal]     JSON vCalendar source
-# @param[start]   start date to render
-# @param[end]     end date to render
+# @param[s]       start date to render
+# @param[t]       end date to render
 # @return         List of events between [start] and [end] rendered from  
 #                 source [cal].
-render_calendar = (cal, start, end) ->
-
-  start = Date.parse start # Start date
-  end   = Date.parse end   # End date
+render_calendar = (cal, s, t) ->
 
   # Find rules we might acutally care about
   # 
-    
+  
   results = []
 
-  console.log "will loop over #{cal.length} events"
+  # console.log "wanna do between", s.toISOString().slice(0, 10), "-", t.toISOString().slice(0, 10)
+  # console.log "will loop over #{cal.length} rules for cal"
+  
   i = 0
 
-  for x in cal
+  for x, index in cal
+
+    if x.rrule and not x.rrule.end
+      # console.log 'this rrule goes forever'
+      x.rrule.end = new Date(t.getTime()).add(7).days()
 
     # End of the length we care about 
-    death = if x.rrule then x.rrule.end else x.end
+    x.death = if x.rrule then x.rrule.end else x.end
 
     # >> If null, probably eternally repeating event. Not sure though. check.
     #    Make it unreachably in the future.
-    if not death
-      death = end.add(1).days()
+    if not x.death
+      # console.log 'gonna give it a new x.death'
+      x.death = new Date(t.getTime()).add(1).days()
 
-    # console.log "#{death} and #{Object.prototype.toString.call(death)}"
+    # console.log "#{x.death} and #{Object.prototype.toString.call(x.death)}"
 
     # Filter only the entries that would affect our range.
-    if start.isAfter(new Date(x.start)) and start.isBefore(new Date(death))
+    if s.isBefore(new Date(x.death)) and t.isAfter(new Date(x.start))
       
       # We don't care if its for a weekday outside our range.
-      if x.rrule? and x.rrule.weekdays? and x.rrule.frequency? and x.rrule.weekdays.indexOf(dow[start.getDay()]) < 0
-        continue
+      # if x.rrule? and x.rrule.weekdays? and x.rrule.frequency? and x.rrule.weekdays.indexOf(dow[start.getDay()]) < 0
+      #   console.log 'nope'
+      #   continue
 
       # Here we have all rules and events for the days we care about... maybe.
       
+      # console.log "#{index}. st: " + x.start.toISOString(), " - ed:" + x.rrule.end.toISOString()
+
+      delta_h = timespan.fromDates(x.start, x.end).totalHours()
+
       if x.rrule
         
+        # console.log x
+
         byweekday = undefined
+        
         if x.rrule.weekdays
-          byweekday = x.rrule.weekdays.split(",").map (x)-> return rruleday[x]
+          byweekday = x.rrule.weekdays.map (x)-> return rruleday[x]
 
         for_rrule = {
             freq:       RRule.WEEKLY, # Change.
-            dtstart:    x.rrule.start,
+            dtstart:    x.start,
             until:      x.rrule.end,
             count:      x.rrule.count
         }
@@ -191,36 +309,20 @@ render_calendar = (cal, start, end) ->
         
         rule = new RRule(for_rrule);
 
-        evres = rule.between(start, end).map (r) ->
+        evres = rule.between(s, t).forEach (r) ->
 
-          x.start = new Date(x.start)
-          x.end = new Date(x.end)
-
-          start = new Date(
-            r.getFullYear(),
-            r.getMonth(),
-            r.getDay(),
-            x.start.getHours(),
-            x.start.getMinutes(),
-            x.start.getSeconds())
-
-          end = new Date(
-            r.getFullYear(),
-            r.getMonth(),
-            r.getDay(),
-            x.end.getHours(),
-            x.end.getMinutes(),
-            x.end.getSeconds())
+          end = new Date(r.getTime()).add(delta_h).hours()
 
           results.push {
             summary : x.summary
-            start : Number(start)
-            end   : Number(end)
+            start : new Date(r.getTime())
+            end   : new Date(end.getTime())
           }
           
-          return 'done'
-
       else 
         results.push x
       
   return results
+
+
+start_of = (date) -> date.setHours(0,0,0,0)
