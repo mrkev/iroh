@@ -89,7 +89,7 @@
 			"payment": "BRB,cash",
 			"menu_id": null
 		},
-	"jansens_dining_room,_bethe_house" : 
+	"jansens_dining_room_bethe_house" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/h0nfohf0d90ot1rmukjphj7ajc%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.447116, -76.48864",
 			"payment": "BRB,cash,swipe",

@@ -8,27 +8,12 @@ menu_locations =
   "becker_house_dining_room": 2,
   "keeton_house_dining_room": 3,
   "rose_house_dining_room": 4,
-  "jansens_dining_room,_bethe_house": 5,
+  "jansens_dining_room_bethe_house": 5,
   "robert_purcell_marketplace_eatery": 6,
   "north_star": 7,
   "risley_dining": 8,
   "104west": 9,
   "okenshields": 10
-
-lol_goback = [
-  "let rekt. THIS IS NOT A VALID ID LOL"
-  "cook_house_dining_room"
-  "becker_house_dining_room"
-  "keeton_house_dining_room"
-  "rose_house_dining_room"
-  "jansens_dining_room,_bethe_house"
-  "robert_purcell_marketplace_eatery"
-  "north_star"
-  "risley_dining"
-  "104west"
-  "okenshields"
-]
-
 
 calendars = require './calendars.json'
 
@@ -61,7 +46,7 @@ class MenuManager
   #                    - becker_house_dining_room
   #                    - keeton_house_dining_room
   #                    - rose_house_dining_room
-  #                    - jansens_dining_room,_bethe_house
+  #                    - jansens_dining_room_bethe_house
   #                    - robert_purcell_marketplace_eatery
   #                    - north_star
   #                    - risley_dining
