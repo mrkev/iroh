@@ -1,4 +1,4 @@
-Iroh [![Build Status](https://travis-ci.org/mrkev/Iroh.svg?branch=master)](https://travis-ci.org/mrkev/Iroh) [![Codacy Badge](https://www.codacy.com/project/badge/f8187d74a6744661b71a66403e81dbd8](https://www.codacy.com/app/kevin9794/Iroh)
+Iroh [![Build Status](https://travis-ci.org/mrkev/Iroh.svg?branch=master)](https://travis-ci.org/mrkev/Iroh) [![Codacy Badge](https://www.codacy.com/project/badge/f8187d74a6744661b71a66403e81dbd8)](https://www.codacy.com/app/kevin9794/Iroh)
 =====
 
 Dining module for RedAPI. Can be used to fetch information about Cornell dining calendars. Uses promises. They're awesome.
