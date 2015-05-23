@@ -43,6 +43,12 @@
 			"payment": "",
 			"hall_menu_id": null
 		},
+	"bus_stop_bagels" :
+		{ "icalendar": "https://www.google.com/calendar/ical/rpp0nrlp282t9h18hhol5f0dkc%40group.calendar.google.com/public/basic.ics",
+			"coordinates" :"42.448082, -76.479049",
+			"payment": "",
+			"menu_id": null
+		},
 	"cafe_jennie" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/geron0aq1ooj7jugmcmdc2s2cc%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.446851, -76.484376",
@@ -161,6 +167,12 @@
 			"coordinates" :"42.447116, -76.482031",
 			"payment": "BRB,cash",
 			"hall_menu_id": null
+		},
+	"sweet_sensations" :
+		{ "icalendar": "https://www.google.com/calendar/ical/h4iqc186n7p4nvkh93mom2vnt0%40group.calendar.google.com/public/basic.ics",
+			"coordinates" :"42.453608, -76.476345",
+			"payment": "",
+			"menu_id": null
 		},
 	"synapsis_cafe" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/h8v5tm5eknsvhgm65bv30dqj0o%40group.calendar.google.com/public/basic.ics",
