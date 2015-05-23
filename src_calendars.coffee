@@ -1,12 +1,12 @@
+require 'datejs'
 rp        = require("request-promise")
 Promise   = require("es6-promise").Promise
 parsecal  = require("icalendar").parse_calendar
 RRule     = require('rrule').RRule
 timespan  = require('timespan')
 
-require 'datejs'
-
 dow = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"]
+
 rruleday = {
   "MO":RRule.MO
   "TU":RRule.TU
@@ -17,13 +17,16 @@ rruleday = {
   "SU":RRule.SU
 }
 
+typeIsArray = Array.isArray || ( value ) ->
+  return {}.toString.call( value ) is '[object Array]'
 
-typeIsArray = Array.isArray || ( value ) -> return {}.toString.call( value ) is '[object Array]'
-
-###
+##
 # Iroh
 # Dining module for RedAPI.
-###
+# 
+# .interval: how often the cache gets cleared. (Default: 1 day)
+# .data: raw cache data. Format not ensured to be compatible between versions.
+##
 class Iroh
   
   ##
@@ -32,7 +35,7 @@ class Iroh
   constructor : (@caldb) ->
     @interval = 604800000 / 7 # One day
     @data = {}
-    @timer = setTimeout(@clear, @interval)
+    @_timer = setTimeout(@clear, @interval)
 
   ##
   # Puts the cache outside for the garbage collector to pickup. 
@@ -72,6 +75,8 @@ class Iroh
     ) 
     
 
+  ##
+  # Cache-concious version of .query
   getJSON : (location) ->
     if not @data[location]
       @query location
@@ -79,6 +84,9 @@ class Iroh
       Promise.resolve @data[location]
 
 
+  ##
+  # Creates date_range objects
+  # @return a date_range
   date_range : (start, end) ->
 
     start = Date.parse start # Start date
@@ -95,7 +103,7 @@ class Iroh
   # Gets all menus in the specified (meal, location) coordinate ranges.
   #
   # @param locations    array of locations to query for
-  # @return Promise to massive object. lol.
+  # @return             Promise to massive object. lol.
   get_events : (locations, days) ->
     self = this
 
@@ -124,7 +132,6 @@ class Iroh
     ## Get our calendars
 
     locations = locations.map (loc) -> self.getJSON(loc)
-
     results = {}
 
     return Promise.all(locations).then((res) ->
@@ -137,7 +144,7 @@ class Iroh
         rendered = []
         days.forEach (range) -> 
           try
-            rendered = rendered.concat(render_calendar(events, range.s, range.e))
+            rendered = rendered.concat(render_calendar events, range.s, range.e)
           catch e
             console.trace e
 
@@ -151,20 +158,21 @@ class Iroh
       console.trace err
 
 
-
-
 module.exports = new Iroh(require('./calendars.json'))
 
 
-###
-# Utils and the like.
-###
 
+
+########################## Utils and helper functions ##########################
+
+##
+# Churns the calendar from a convulted iCalendar file to a JSON object with the
+# information we care about
+# @return JSON object
 icalchurner = (ical) ->
-
+  
   try
     data = parsecal(ical)
-
   catch error
     console.log('bro')
     console.trace error
@@ -173,7 +181,7 @@ icalchurner = (ical) ->
   delete data['calendar']
 
   # Note: Trying to return the data as is wont work. 
-  # I'm guessing it does into an infinite loop becasue
+  # I'm guessing it goes into an infinite loop becasue
   # data contains circular referece ({ calendar: [Circular] ... })
   
   # Get general calendar information
@@ -191,10 +199,7 @@ icalchurner = (ical) ->
 
   while i >= 0
     vevt = data.components.VEVENT[i].properties
-
-    # console.log(Date.parse(vevt.DTSTART[0].value), Date.parse(vevt.DTEND[0].value))
-
-    evt =
+    evt  =
       start         : Date.parse(vevt.DTSTART[0].value)
       end           : Date.parse(vevt.DTEND[0].value)
       summary       : vevt.SUMMARY[0].value
@@ -223,6 +228,9 @@ icalchurner = (ical) ->
   
   return cal
 
+##
+# Magic function to format date strings from the iCalendar format into a 
+# structure Date.parse() can understand.
 format_yo = (a) ->
   a.substr(0, 4) + "-" + 
   a.substr(4, 2) + "-" + 
@@ -233,10 +241,9 @@ format_yo = (a) ->
     else a.substr(6)))
 
 
-
-
-
 ##
+# Renders JSON from iCalendar (aka. a list of random events and rules) into
+# events happening on a date range (aka. usuable stuff).
 # @param[cal]     JSON vCalendar source
 # @param[s]       start date to render
 # @param[t]       end date to render
@@ -244,12 +251,10 @@ format_yo = (a) ->
 #                 source [cal].
 render_calendar = (cal, s, t) ->
 
-  # Find rules we might acutally care about
-  # 
-  
   results = []
 
-  # console.log "wanna do between", s.toISOString().slice(0, 10), "-", t.toISOString().slice(0, 10)
+  # console.log "wanna do between", 
+  #   s.toISOString().slice(0, 10), "-", t.toISOString().slice(0, 10)
   # console.log "will loop over #{cal.length} rules for cal"
   
   i = 0
@@ -275,20 +280,20 @@ render_calendar = (cal, s, t) ->
     if s.isBefore(new Date(x.death)) and t.isAfter(new Date(x.start))
       
       # We don't care if its for a weekday outside our range.
-      # if x.rrule? and x.rrule.weekdays? and x.rrule.frequency? and x.rrule.weekdays.indexOf(dow[start.getDay()]) < 0
+      # if x.rrule? and x.rrule.weekdays? and x.rrule.frequency? \
+      #   and x.rrule.weekdays.indexOf(dow[start.getDay()]) < 0
       #   console.log 'nope'
       #   continue
 
       # Here we have all rules and events for the days we care about... maybe.
       
-      # console.log "#{index}. st: " + x.start.toISOString(), " - ed:" + x.rrule.end.toISOString()
+      # console.log "#{index}. st: " + x.start.toISOString(), 
+      #   " - ed:" + x.rrule.end.toISOString()
 
       delta_h = timespan.fromDates(x.start, x.end).totalHours()
 
       if x.rrule
         
-        # console.log x
-
         byweekday = undefined
         
         if x.rrule.weekdays
@@ -324,5 +329,8 @@ render_calendar = (cal, s, t) ->
       
   return results
 
-
+##
+# Floors a date to the lowest midnight
 start_of = (date) -> date.setHours(0,0,0,0)
+
+

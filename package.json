@@ -21,7 +21,8 @@
     "request": "^2.53.0",
     "request-promise": "^0.4.1",
     "rrule": "^2.1.0",
-    "timespan": "^2.3.0"
+    "timespan": "^2.3.0",
+    "xml2js": "^0.4.6"
   },
   "devDependencies": {
     "chai": "^1.10.0",

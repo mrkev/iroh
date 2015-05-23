@@ -1,9 +1,16 @@
 'use strict';
+
 /* global require, module */
 require('coffee-script/register');
 var mm = require('./src_menus.coffee');
 var cm = require('./src_calendars.coffee');
 
+
+/**
+ * Main interface for Iroh. 
+ * mm = menu manager, for all dining hall menus
+ * cm = calendar manager, for all dining hall events
+ */
 module.exports = {
   ALL_LOCATIONS : mm.all_locations(),
   ALL_MEALS     : mm.all_meals(),

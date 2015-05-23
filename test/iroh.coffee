@@ -35,8 +35,8 @@ describe 'Iroh.getJSON', ->
 
 
 
-describe 'Iroh.get_menus', ->
-  iroh = require '../index.js'
+# describe 'Iroh.get_menus', ->
+#   iroh = require '../index.js'
   
 
 describe 'Iroh.get_events', ->
@@ -46,4 +46,3 @@ describe 'Iroh.get_events', ->
     iroh.get_events(['okenshields'], iroh.DATE_RANGE('April 6, 2015', 'April 8, 2015')).then((res) ->
       return res.okenshields.length == 4
     ).should.eventually.equal(true) 
-  

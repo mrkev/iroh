@@ -2,20 +2,12 @@ require './vendor/date_format'
 cheerio = require 'cheerio'
 request = require 'request'
 Promise = require('es6-promise').Promise;
+halls   = require './the_halls'
 
-menu_locations =
-  "cook_house_dining_room": 1,
-  "becker_house_dining_room": 2,
-  "keeton_house_dining_room": 3,
-  "rose_house_dining_room": 4,
-  "jansens_dining_room_bethe_house": 5,
-  "robert_purcell_marketplace_eatery": 6,
-  "north_star": 7,
-  "risley_dining": 8,
-  "104west": 9,
-  "okenshields": 10
-
-calendars = require './calendars.json'
+##
+# Should be a { hall_id : int } map, where int is the id to use in the request
+# to fetch the menu for that hall.
+menu_locations = halls.property('hall_menu_id')
 
 today = ->
   return new Date()
@@ -56,7 +48,7 @@ class MenuManager
     
     # Alow for straight-up ids
     if typeof location is 'string'
-      loc = calendars[location].menu_id
+      loc = menu_locations[location]
 
     # No menu available.
     if loc is null
