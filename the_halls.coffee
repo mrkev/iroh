@@ -12,13 +12,16 @@ calendars = require './calendars.json'
 map_of_property = (map, property) ->
   return Object.keys(map)
   .map((x) ->
-    return undefined if map[x][property] is null 
+
+    return undefined if map[x][property] is null
+    return undefined if map[x][property] is undefined 
+
     obj = {}
     obj[x] = map[x][property]
     return obj
   )
   .filter((x) ->
-    return not (x is null) || not (x is undefined) ;
+    return (not (x is null)) and (not (x is undefined))
   )
   .reduce((acc, x) ->
     Object.keys(x).forEach (key) ->
