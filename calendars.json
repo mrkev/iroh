@@ -3,168 +3,176 @@
 		{ "icalendar": "https://www.google.com/calendar/ical/vlpa2hk9677m9bcbh6n2dtpn7k%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.4442660, -76.4875983",
 			"payment": "BRB,cash,swipe",
-			"menu_id": 9
+			"hall_menu_id": 9
 		},
 	"amit_bhatia_libe_cafe" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/g1pfs9edl1ks5o2dbc58e7fhm8%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.448019, -76.484499",
 			"payment": "BRB,cash",
-			"menu_id": null
+			"hall_menu_id": null
 		},
 	"atrium_cafe" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/9g3c81c0p2loacsbvrjj5o371c%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.446071, -76.483061",
 			"payment": "BRB,cash",
-			"menu_id": null
+			"hall_menu_id": null
 		},
 	"bear_necessities" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/h319a8fk4b5lv0644ebkskhha8%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.455935, -76.477911",
 			"payment": "BRB,cash",
-			"menu_id": null
+			"hall_menu_id": null,
+			"general_menu_id": 1,
+			"general_menu_id_breakfast": 5
 		},
 	"bears_den" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/9pkqrt6elrngarcrf1s4vvdqf4%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.446372, -76.485786",
 			"payment": "BRB,cash",
-			"menu_id": null
+			"hall_menu_id": null
 		},
 	"becker_house_dining_room" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/di2s9rofto7m8innt5e8vftl0o%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.448306, -76.489574",
 			"payment": "BRB,cash,swipe",
-			"menu_id": 2
+			"hall_menu_id": 2
 		},
 	"big_red_barn" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/u1kmovdep2qlmr86io8h4p3ee8%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.448526, -76.48098",
 			"payment": "",
-			"menu_id": null
+			"hall_menu_id": null
 		},
 	"cafe_jennie" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/geron0aq1ooj7jugmcmdc2s2cc%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.446851, -76.484376",
 			"payment": "",
-			"menu_id": null
+			"hall_menu_id": null
 		},
 	"carols_cafe" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/05r2nhfjbnknmsccgd6u8dij0g%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.453117, -76.479864",
 			"payment": "",
-			"menu_id": null
+			"hall_menu_id": null
 		},
 	"cascadeli" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/ju94n6trv0ccoqcnd5u7otle50%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.446689, -76.485679",
 			"payment": "BRB,cash",
-			"menu_id": null
+			"hall_menu_id": null,
+			"general_menu_id": 18
 		},
 	"cook_house_dining_room" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/27hli58rto1hpf15m3sbe54sak%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.448940, -76.489560",
 			"payment": "BRB,cash,swipe",
-			"menu_id": 1
+			"hall_menu_id": 1
 		},
 	"cornell_dairy_bar" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/prvu4v0nr4eu94mqu9q7busa6g%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.447554, -76.471048",
 			"payment": "",
-			"menu_id": null
+			"hall_menu_id": null
 		},
 	"goldies" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/kb9ce5jj2f6oli3c90tc7j6peo%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.450394, -76.482096",
 			"payment": "BRB,cash",
-			"menu_id": null
+			"hall_menu_id": null,
+			"general_menu_id": 21
 		},
 	"green_dragon" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/7sii70faon9ta2vpoehr69415s%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.450948, -76.484456",
 			"payment": "BRB,cash",
-			"menu_id": null
+			"hall_menu_id": null
 		},
 	"ivy_room" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/ve9kl6pq8esjfqbhg03qnjtgjg%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.446372, -76.485786",
 			"payment": "BRB,cash",
-			"menu_id": null
+			"hall_menu_id": null
 		},
 	"jansens_dining_room_bethe_house" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/h0nfohf0d90ot1rmukjphj7ajc%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.447116, -76.48864",
 			"payment": "BRB,cash,swipe",
-			"menu_id": 5
+			"hall_menu_id": 5
 		},
 	"jansens_market" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/0dqnc6l2mt25okch8nimsnojhg%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.446325, -76.487932",
 			"payment": "",
-			"menu_id": null
+			"hall_menu_id": null
 		},
 	"keeton_house_dining_room" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/ekd72jfc2qai617oloa2b0ibp0%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.446803, -76.489478",
 			"payment": "BRB,cash,swipe",
-			"menu_id": 3
+			"hall_menu_id": 3
 		},
 	"marthas_cafe" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/sperf092mrbt796rr36toeqrus%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.449903, -76.479092",
 			"payment": "BRB,cash",
-			"menu_id": null
+			"hall_menu_id": null,
+			"general_menu_id_breakfast": 3,
+			"general_menu_id": 2
 		},
 	"mattins_cafe" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/1qman2n728pqjuq5ntaoofc7v0%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.444805, -76.482589",
 			"payment": "BRB,cash",
-			"menu_id": null
+			"hall_menu_id": null,
+			"general_menu_id": 14
 		},
 	"north_star" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/ecbhqf3ibeei09dds91viod5g8%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.453449, -76.473503",
 			"payment": "BRB,cash,swipe",
-			"menu_id": 7
+			"hall_menu_id": 7
 		},
 	"okenshields" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/3hku0mr66kapq1lh8fakug9kko%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.4464907, -76.4856783",
 			"payment": "BRB,cash,swipe",
-			"menu_id": 10
+			"hall_menu_id": 10
 		},
 	"risley_dining" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/hq98btd396f3077p88d30c84fs%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.453239, -76.482080",
 			"payment": "BRB,cash,swipe",
-			"menu_id": 8
+			"hall_menu_id": 8
 		},
 	"robert_purcell_marketplace_eatery" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/32uglqeiqfo9edhpp4tka8oqsc%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.456010, -76.477628",
 			"payment": "BRB,cash,swipe",
-			"menu_id": 6
+			"hall_menu_id": 6
 		},
 	"rose_house_dining_room" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/mo4mqfpe88ucqaer728ovfei18%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.447961, -76.488796",
 			"payment": "BRB,cash,swipe",
-			"menu_id": 4
+			"hall_menu_id": 4
 		},
 	"rustys" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/sqp9nd9rt727fm7v2sgmfelkps%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.447116, -76.482031",
 			"payment": "BRB,cash",
-			"menu_id": null
+			"hall_menu_id": null
 		},
 	"synapsis_cafe" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/h8v5tm5eknsvhgm65bv30dqj0o%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.446863, -76.477311",
 			"payment": "BRB,cash",
-			"menu_id": null
+			"hall_menu_id": null,
+			"general_menu_id": 16
 		},
 	"trillium" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/i8v43jd76mugc62voucp4dqn9s%40group.calendar.google.com/public/basic.ics",
 			"coordinates" :"42.4470972, -76.4821258",
 			"payment": "BRB,cash",
-			"menu_id": null
+			"hall_menu_id": null
 		}
 }
