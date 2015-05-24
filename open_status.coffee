@@ -19,7 +19,7 @@ END_URL = '/events?singleEvents=true&orderBy=startTime' +
 fs.readFile './api_key', (err,API_KEY) ->
   return console.log(err) if err
   END_URL += "&key=#{API_KEY}"
-  getInfo info.cal_id for own loc, info of cals
+  getInfo info.cal_id, info.name for own loc, info of cals
 
 # HELPERS
 
@@ -27,9 +27,9 @@ fs.readFile './api_key', (err,API_KEY) ->
 # post: (h|hh):mm (am|pm)
 getTime = (d) -> d.toString('H:mm tt').toLowerCase()
 
-# pre: a Google Calendar calendarId
-# post: prints open status (text, isOpen, isAlmostOpen) of the location
-getInfo = (calId) ->
+# pre: calId is a Google Calendar calendarId, name is name of the location
+# post: prints name & open status (text, isOpen, isAlmostOpen) of the location
+getInfo = (calId, name) ->
   url = FRONT_URL + calId + END_URL
   console.log(url)
   rp(url).then((response) ->
@@ -76,6 +76,7 @@ getInfo = (calId) ->
     # if no status was found, just set it to closed
     status = 'closed' unless status
 
+    console.log(name)
     console.log(status)
     console.log(isOpen)
     console.log(isAlmostOpen)

@@ -2,6 +2,7 @@
 	"104west" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/vlpa2hk9677m9bcbh6n2dtpn7k%40group.calendar.google.com/public/basic.ics",
       "cal_id": "vlpa2hk9677m9bcbh6n2dtpn7k@group.calendar.google.com",
+      "name": "104West!",
 			"coordinates" :"42.4442660, -76.4875983",
 			"payment": "BRB,cash,swipe",
 			"menu_id": 9
@@ -9,6 +10,7 @@
 	"amit_bhatia_libe_cafe" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/g1pfs9edl1ks5o2dbc58e7fhm8%40group.calendar.google.com/public/basic.ics",
       "cal_id": "g1pfs9edl1ks5o2dbc58e7fhm8@group.calendar.google.com",
+      "name": "Libe Café",
 			"coordinates" :"42.448019, -76.484499",
 			"payment": "BRB,cash",
 			"menu_id": null
@@ -16,6 +18,7 @@
 	"atrium_cafe" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/9g3c81c0p2loacsbvrjj5o371c%40group.calendar.google.com/public/basic.ics",
       "cal_id": "9g3c81c0p2loacsbvrjj5o371c@group.calendar.google.com",
+      "name": "Atrium Café",
 			"coordinates" :"42.446071, -76.483061",
 			"payment": "BRB,cash",
 			"menu_id": null
@@ -23,6 +26,7 @@
 	"bear_necessities" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/h319a8fk4b5lv0644ebkskhha8%40group.calendar.google.com/public/basic.ics",
       "cal_id": "h319a8fk4b5lv0644ebkskhha8@group.calendar.google.com",
+      "name": "Bear Necessities",
 			"coordinates" :"42.455935, -76.477911",
 			"payment": "BRB,cash",
 			"menu_id": null
@@ -30,6 +34,7 @@
 	"bears_den" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/9pkqrt6elrngarcrf1s4vvdqf4%40group.calendar.google.com/public/basic.ics",
       "cal_id": "9pkqrt6elrngarcrf1s4vvdqf4@group.calendar.google.com",
+      "name": "Bear's Den",
 			"coordinates" :"42.446372, -76.485786",
 			"payment": "BRB,cash",
 			"menu_id": null
@@ -37,6 +42,7 @@
 	"becker_house_dining_room" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/di2s9rofto7m8innt5e8vftl0o%40group.calendar.google.com/public/basic.ics",
       "cal_id": "di2s9rofto7m8innt5e8vftl0o@group.calendar.google.com",
+      "name": "Becker House Dining",
 			"coordinates" :"42.448306, -76.489574",
 			"payment": "BRB,cash,swipe",
 			"menu_id": 2
@@ -44,6 +50,7 @@
 	"big_red_barn" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/u1kmovdep2qlmr86io8h4p3ee8%40group.calendar.google.com/public/basic.ics",
       "cal_id": "u1kmovdep2qlmr86io8h4p3ee8@group.calendar.google.com",
+      "name": "Big Red Barn",
 			"coordinates" :"42.448526, -76.48098",
 			"payment": "",
 			"menu_id": null
@@ -51,6 +58,7 @@
 	"bus_stop_bagels" :
 		{ "icalendar": "https://www.google.com/calendar/ical/rpp0nrlp282t9h18hhol5f0dkc%40group.calendar.google.com/public/basic.ics",
       "cal_id": "rpp0nrlp282t9h18hhol5f0dkc@group.calendar.google.com",
+      "name": "Bus Stop Bagels",
 			"coordinates" :"42.448082, -76.479049",
 			"payment": "",
 			"menu_id": null
@@ -58,6 +66,7 @@
 	"cafe_jennie" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/geron0aq1ooj7jugmcmdc2s2cc%40group.calendar.google.com/public/basic.ics",
       "cal_id": "geron0aq1ooj7jugmcmdc2s2cc@group.calendar.google.com",
+      "name": "Café Jennie",
 			"coordinates" :"42.446851, -76.484376",
 			"payment": "",
 			"menu_id": null
@@ -65,6 +74,7 @@
 	"carols_cafe" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/05r2nhfjbnknmsccgd6u8dij0g%40group.calendar.google.com/public/basic.ics",
       "cal_id": "05r2nhfjbnknmsccgd6u8dij0g@group.calendar.google.com",
+      "name": "Carol's Café",
 			"coordinates" :"42.453117, -76.479864",
 			"payment": "",
 			"menu_id": null
@@ -72,6 +82,7 @@
 	"cascadeli" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/ju94n6trv0ccoqcnd5u7otle50%40group.calendar.google.com/public/basic.ics",
       "cal_id": "ju94n6trv0ccoqcnd5u7otle50@group.calendar.google.com",
+      "name": "Cascadeli",
 			"coordinates" :"42.446689, -76.485679",
 			"payment": "BRB,cash",
 			"menu_id": null
@@ -79,6 +90,7 @@
 	"cook_house_dining_room" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/27hli58rto1hpf15m3sbe54sak%40group.calendar.google.com/public/basic.ics",
       "cal_id": "27hli58rto1hpf15m3sbe54sak@group.calendar.google.com",
+      "name": "Cook House Dining Room",
 			"coordinates" :"42.448940, -76.489560",
 			"payment": "BRB,cash,swipe",
 			"menu_id": 1
@@ -86,6 +98,7 @@
 	"cornell_dairy_bar" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/prvu4v0nr4eu94mqu9q7busa6g%40group.calendar.google.com/public/basic.ics",
       "cal_id": "prvu4v0nr4eu94mqu9q7busa6g@group.calendar.google.com",
+      "name": "Cornell Dairy Bar",
 			"coordinates" :"42.447554, -76.471048",
 			"payment": "",
 			"menu_id": null
@@ -93,6 +106,7 @@
 	"goldies" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/kb9ce5jj2f6oli3c90tc7j6peo%40group.calendar.google.com/public/basic.ics",
       "cal_id": "kb9ce5jj2f6oli3c90tc7j6peo@group.calendar.google.com",
+      "name": "Goldie's",
 			"coordinates" :"42.450394, -76.482096",
 			"payment": "BRB,cash",
 			"menu_id": null
@@ -100,6 +114,7 @@
 	"green_dragon" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/7sii70faon9ta2vpoehr69415s%40group.calendar.google.com/public/basic.ics",
       "cal_id": "7sii70faon9ta2vpoehr69415s@group.calendar.google.com",
+      "name": "Green Dragon",
 			"coordinates" :"42.450948, -76.484456",
 			"payment": "BRB,cash",
 			"menu_id": null
@@ -107,6 +122,7 @@
 	"ivy_room" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/ve9kl6pq8esjfqbhg03qnjtgjg%40group.calendar.google.com/public/basic.ics",
       "cal_id": "ve9kl6pq8esjfqbhg03qnjtgjg@group.calendar.google.com",
+      "name": "Ivy Room",
 			"coordinates" :"42.446372, -76.485786",
 			"payment": "BRB,cash",
 			"menu_id": null
@@ -114,6 +130,7 @@
 	"jansens_dining_room_bethe_house" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/h0nfohf0d90ot1rmukjphj7ajc%40group.calendar.google.com/public/basic.ics",
       "cal_id": "h0nfohf0d90ot1rmukjphj7ajc@group.calendar.google.com",
+      "name": "Bethe House Dining",
 			"coordinates" :"42.447116, -76.48864",
 			"payment": "BRB,cash,swipe",
 			"menu_id": 5
@@ -121,6 +138,7 @@
 	"jansens_market" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/0dqnc6l2mt25okch8nimsnojhg%40group.calendar.google.com/public/basic.ics",
       "cal_id": "0dqnc6l2mt25okch8nimsnojhg@group.calendar.google.com",
+      "name": "Jansen's Market",
 			"coordinates" :"42.446325, -76.487932",
 			"payment": "",
 			"menu_id": null
@@ -128,6 +146,7 @@
 	"keeton_house_dining_room" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/ekd72jfc2qai617oloa2b0ibp0%40group.calendar.google.com/public/basic.ics",
       "cal_id": "ekd72jfc2qai617oloa2b0ibp0@group.calendar.google.com",
+      "name": "Keeton House Dining",
 			"coordinates" :"42.446803, -76.489478",
 			"payment": "BRB,cash,swipe",
 			"menu_id": 3
@@ -135,6 +154,7 @@
 	"marthas_cafe" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/sperf092mrbt796rr36toeqrus%40group.calendar.google.com/public/basic.ics",
       "cal_id": "sperf092mrbt796rr36toeqrus@group.calendar.google.com",
+      "name": "Martha's Café",
 			"coordinates" :"42.449903, -76.479092",
 			"payment": "BRB,cash",
 			"menu_id": null
@@ -142,6 +162,7 @@
 	"mattins_cafe" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/1qman2n728pqjuq5ntaoofc7v0%40group.calendar.google.com/public/basic.ics",
       "cal_id": "1qman2n728pqjuq5ntaoofc7v0@group.calendar.google.com",
+      "name": "Mattin's Café",
 			"coordinates" :"42.444805, -76.482589",
 			"payment": "BRB,cash",
 			"menu_id": null
@@ -149,6 +170,7 @@
 	"north_star" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/ecbhqf3ibeei09dds91viod5g8%40group.calendar.google.com/public/basic.ics",
       "cal_id": "ecbhqf3ibeei09dds91viod5g8@group.calendar.google.com",
+      "name": "North Star Dining",
 			"coordinates" :"42.453449, -76.473503",
 			"payment": "BRB,cash,swipe",
 			"menu_id": 7
@@ -156,6 +178,7 @@
 	"okenshields" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/3hku0mr66kapq1lh8fakug9kko%40group.calendar.google.com/public/basic.ics",
       "cal_id": "3hku0mr66kapq1lh8fakug9kko@group.calendar.google.com",
+      "name": "Okenshields",
 			"coordinates" :"42.4464907, -76.4856783",
 			"payment": "BRB,cash,swipe",
 			"menu_id": 10
@@ -163,6 +186,7 @@
 	"risley_dining" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/hq98btd396f3077p88d30c84fs%40group.calendar.google.com/public/basic.ics",
       "cal_id": "hq98btd396f3077p88d30c84fs@group.calendar.google.com",
+      "name": "Risley Dining",
 			"coordinates" :"42.453239, -76.482080",
 			"payment": "BRB,cash,swipe",
 			"menu_id": 8
@@ -170,6 +194,7 @@
 	"robert_purcell_marketplace_eatery" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/32uglqeiqfo9edhpp4tka8oqsc%40group.calendar.google.com/public/basic.ics",
       "cal_id": "32uglqeiqfo9edhpp4tka8oqsc@group.calendar.google.com",
+      "name": "Robert Purcell Dining",
 			"coordinates" :"42.456010, -76.477628",
 			"payment": "BRB,cash,swipe",
 			"menu_id": 6
@@ -177,6 +202,7 @@
 	"rose_house_dining_room" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/mo4mqfpe88ucqaer728ovfei18%40group.calendar.google.com/public/basic.ics",
       "cal_id": "mo4mqfpe88ucqaer728ovfei18@group.calendar.google.com",
+      "name": "Rose House Dining",
 			"coordinates" :"42.447961, -76.488796",
 			"payment": "BRB,cash,swipe",
 			"menu_id": 4
@@ -184,6 +210,7 @@
 	"rustys" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/sqp9nd9rt727fm7v2sgmfelkps%40group.calendar.google.com/public/basic.ics",
       "cal_id": "sqp9nd9rt727fm7v2sgmfelkps@group.calendar.google.com",
+      "name": "Rusty's",
 			"coordinates" :"42.447116, -76.482031",
 			"payment": "BRB,cash",
 			"menu_id": null
@@ -191,6 +218,7 @@
 	"sweet_sensations" :
 		{ "icalendar": "https://www.google.com/calendar/ical/h4iqc186n7p4nvkh93mom2vnt0%40group.calendar.google.com/public/basic.ics",
       "cal_id": "h4iqc186n7p4nvkh93mom2vnt0@group.calendar.google.com",
+      "name": "Sweet Sensations",
 			"coordinates" :"42.453608, -76.476345",
 			"payment": "",
 			"menu_id": null
@@ -198,6 +226,7 @@
 	"synapsis_cafe" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/h8v5tm5eknsvhgm65bv30dqj0o%40group.calendar.google.com/public/basic.ics",
       "cal_id": "h8v5tm5eknsvhgm65bv30dqj0o@group.calendar.google.com",
+      "name": "Synapsis Café",
 			"coordinates" :"42.446863, -76.477311",
 			"payment": "BRB,cash",
 			"menu_id": null
@@ -205,6 +234,7 @@
 	"trillium" : 
 		{ "icalendar": "https://www.google.com/calendar/ical/i8v43jd76mugc62voucp4dqn9s%40group.calendar.google.com/public/basic.ics",
       "cal_id": "i8v43jd76mugc62voucp4dqn9s@group.calendar.google.com",
+      "name": "Trillium",
 			"coordinates" :"42.4470972, -76.4821258",
 			"payment": "BRB,cash",
 			"menu_id": null
