@@ -5,13 +5,7 @@ cals = require('./calendars.json')
 
 require 'datejs'
 
-###
-The API_KEY is from a Google Developers Console project.
-It is a Public API access key.
-Explanation of parameters:
-  https://developers.google.com/apis-explorer/#s/calendar/v3/calendar.events.list
-###
-
+# https://developers.google.com/apis-explorer/#s/calendar/v3/calendar.events.list
 FRONT_URL = 'https://www.googleapis.com/calendar/v3/calendars/'
 END_URL = '/events?singleEvents=true&orderBy=startTime' +
           '&maxResults=10&fields=items(summary%2Cstart%2Cend)%2Csummary' +
@@ -21,35 +15,41 @@ END_URL = '/events?singleEvents=true&orderBy=startTime' +
 post:
   Promise resolving to object:
   {
-    'dining_halls' : list of getInfo(diningHall) for each dining hall
-    'cafes'        : list of getInfo(cafes) for each cafes
+    'dining_halls' : list of getLocDetails(diningHall) for each dining hall
+    'cafes'        : list of getLocDetails(cafes) for each cafes
   }
   Done for every calendar
   Each list will be sorted by name
 ###
-getLocInfo
-fs.readFile './api_key', (err,API_KEY) ->
-  return console.log(err) if err
-  END_URL += "&key=#{API_KEY}"
-
+getResults = () ->
   return new Promise (resolve, reject) ->
-    Promise.all(getInfo id, loc for own id, loc of cals).then((result) ->
+    fs.readFile './api_key', (err,API_KEY) ->
+      return console.log(err) if err
+      END_URL += "&key=#{API_KEY}"
 
-      # sort the lists in result by name
-      result.sort (a,b) -> return a.name < b.name ? -1 : 1
+      Promise.all(getLocDetails id, loc for own id, loc of cals).then((result) ->
 
-      # partition into diningHalls vs Cafes
-      diningHalls = []
-      cafes = []
-      partition = (x) ->
-        if x.is_dining_hall then diningHalls.push x else cafes.push x
-      partition x for x in result
+        # sort the lists in result by name
+        result.sort (a,b) -> return a.name < b.name ? -1 : 1
 
-      resolve {
-        'dining_halls' : diningHalls,
-        'cafes'        : cafes,
-      }
-    )
+        # partition into diningHalls vs Cafes
+        diningHalls = []
+        cafes = []
+        partition = (x) ->
+          if x.is_dining_hall then diningHalls.push x else cafes.push x
+        partition x for x in result
+
+        # resolve the parent new Promise object
+        resolve {
+          'dining_halls' : diningHalls,
+          'cafes'        : cafes,
+        }
+      )
+
+# INIT
+getResults().then((result) ->
+  console.log result
+)
 
 # pre: d is Date object
 # post: (h|hh):mm (am|pm)
@@ -73,28 +73,30 @@ post:
     is_dining_hall : if true, this location is a dining hall, else cafe
   }
 ###
-getInfo = (id, loc) ->
+getLocDetails = (id, loc) ->
   calId = loc.cal_id
   name = loc.name
-  category = if loc.is_dining_hall then "dining_halls" else "cafes"
+  isDiningHall = loc.is_dining_hall
+  category = if isDiningHall then "dining_halls" else "cafes"
 
   url = FRONT_URL + calId + END_URL
   return new Promise (resolve, reject) ->
     rp(url).then((response) ->
       response = JSON.parse(response)
 
-      events = response.items # list of events
+      # list of events
+      events = response.items
 
       now = new Date()
 
-      # vars set by getOpenText
+      # vars to-be-set by getOpenText below
       openText = ''
       isOpen = false
       isAlmostOpen = false
       prevEnd = null
 
       # pre: e is Google Calendar event
-      # post: sets status, isOpen, isAlmostOpen
+      # post: sets openText, isOpen, isAlmostOpen
       getOpenText = (e) ->
         # event summary contains closed -> not an open event
         if e.summary.search(/closed/i) < 0
@@ -119,17 +121,18 @@ getInfo = (id, loc) ->
               else
                 openText = "closed until #{start.toString('dddd')}, #{getTime(start)}"
 
-      # run getOpenText over all the events
+      # run getOpenText over the events
       getOpenText event for event in events
       # if no status was found, just set it to closed
       openText = 'closed' unless openText
 
+      # resolve the parent new Promise object
       resolve {
         "id"             : id,
         "name"           : name,
         "open_text"      : openText,
         "is_open"        : isOpen,
         "is_almost_open" : isAlmostOpen,
-        "is_dining_hall" : loc.is_dining_hall
+        "is_dining_hall" : isDiningHall
       }
     )
