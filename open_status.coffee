@@ -21,7 +21,7 @@ post:
   Done for every calendar
   Each list will be sorted by name
 ###
-getResults = () ->
+getResult = () ->
   return new Promise (resolve, reject) ->
     fs.readFile './api_key', (err,API_KEY) ->
       return console.log(err) if err
@@ -47,7 +47,7 @@ getResults = () ->
       )
 
 # INIT
-getResults().then((result) ->
+getResult().then((result) ->
   console.log result
 )
 
@@ -76,8 +76,6 @@ post:
 getLocDetails = (id, loc) ->
   calId = loc.cal_id
   name = loc.name
-  isDiningHall = loc.is_dining_hall
-  category = if isDiningHall then "dining_halls" else "cafes"
 
   url = FRONT_URL + calId + END_URL
   return new Promise (resolve, reject) ->
@@ -133,6 +131,6 @@ getLocDetails = (id, loc) ->
         "open_text"      : openText,
         "is_open"        : isOpen,
         "is_almost_open" : isAlmostOpen,
-        "is_dining_hall" : isDiningHall
+        "is_dining_hall" : loc.is_dining_hall
       }
     )
