@@ -67,8 +67,9 @@ post:
   {
     id             : id of the place
     name           : user-friendly name
-    open_text      : user-friendly text of open status
-    is_open        : boolean of is open
+    change_time    : unix time of when the current status changes
+                     if none found, set to 0 to imply closed for a while
+    is_open        : boolean of is open currently
     is_almost_open : boolean of is closed, but opens within 2 hours
     is_dining_hall : if true, this location is a dining hall, else cafe
   }
@@ -80,55 +81,49 @@ getLocDetails = (id, loc) ->
   url = FRONT_URL + calId + END_URL
   return new Promise (resolve, reject) ->
     rp(url).then((response) ->
-      response = JSON.parse(response)
+      response = JSON.parse response
 
       # list of events
       events = response.items
 
       now = new Date()
 
-      # vars to-be-set by getOpenText below
-      openText = ''
+      # vars to-be-set by getOpenStatus below
+      changeTime = 0
       isOpen = false
       isAlmostOpen = false
       prevEnd = null
 
       # pre: e is Google Calendar event
-      # post: sets openText, isOpen, isAlmostOpen
-      getOpenText = (e) ->
+      # post: sets changeTime, isOpen, isAlmostOpen
+      getOpenStatus = (e) ->
         # event summary contains closed -> not an open event
         if e.summary.search(/closed/i) < 0
           start = Date.parse(e.start.dateTime)
-          # if status not set yet, or this event continues the previous event
-          if !openText or !prevEnd or start.equals(prevEnd)
+          # if changeTime not set yet, or this event continues the previous event
+          if !changeTime or !prevEnd or start.equals(prevEnd)
             end = Date.parse(e.end.dateTime)
             prevEnd = end
             if now >= start && now < end
               # we are in this event, so set it to be open until the end
               isOpen = true
-              openText = "open until #{getTime(end)}"
+              changeTime = end.getTime()
             else if now < start
               # we are before this event, so set it as closed until the start
               dayDiff = start.getDay() - now.getDay()
-              if dayDiff is 0
-                if start.getHours() - now.getHours() <= 2
-                  isAlmostOpen = true
-                openText = "opens at #{getTime(start)}"
-              else if dayDiff is 1
-                openText = "closed until tomorrow, #{getTime(start)}"
-              else
-                openText = "closed until #{start.toString('dddd')}, #{getTime(start)}"
+              hoursDiff = start.getHours() - now.getHours()
+              if dayDiff is 0 && hoursDiff <= 2
+                isAlmostOpen = true
+              changeTime = start.getTime()
 
-      # run getOpenText over the events
-      getOpenText event for event in events
-      # if no status was found, just set it to closed
-      openText = 'closed' unless openText
+      # run getOpenStatus over the events
+      getOpenStatus event for event in events
 
       # resolve the parent new Promise object
       resolve {
         "id"             : id,
         "name"           : name,
-        "open_text"      : openText,
+        "change_time"    : changeTime / 1000, # ms -> seconds
         "is_open"        : isOpen,
         "is_almost_open" : isAlmostOpen,
         "is_dining_hall" : loc.is_dining_hall
