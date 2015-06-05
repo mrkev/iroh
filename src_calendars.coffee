@@ -33,7 +33,7 @@ class Iroh
   # @param  [caldb]  Map of location_id -> ical_url for calendars to use.
   # @return         The mighty Iroh, constructed and ready to tea.
   constructor : (@caldb) ->
-    @interval = 604800000 / 7 # One day
+    @interval = 86400000 # ms in one day
     @data = {}
     @_timer = setTimeout(@clear, @interval)
 
@@ -48,19 +48,20 @@ class Iroh
   # @return Promise -> JSON object for parsed iCalendar data for location,
   query : (location_id) ->
     self = this
+    curr_loc = self.caldb[location_id]
+    # return list of dining ids if no location_id is specified
     return Promise.resolve(dining: Object.keys(@caldb)) if not location_id
-    return Promise.resolve(null) if not self.caldb[location_id]
-    return Promise.resolve(@data[location_id]) unless @data[location_id] == undefined
+    # return null if location_id not recognized
+    return Promise.resolve(null) if not curr_loc
     
-    url = self.caldb[location_id].icalendar
+    url = curr_loc.icalendar
     new Promise((resolve, reject) ->
 
       rp(url).then((response) ->
         try
           data = icalchurner(response)
           data['location_id'] = location_id
-          data["coordinates"] = self.caldb[location_id].coordinates \
-                             if self.caldb[location_id].coordinates
+          data["coordinates"] = curr_loc.coordinates if curr_loc.coordinates
           self.data[location_id] = data
           resolve data
         catch error
@@ -78,10 +79,11 @@ class Iroh
   ##
   # Cache-concious version of .query
   getJSON : (location) ->
-    if not @data[location]
-      @query location
-    else
+    if @data[location]
+      # if we have a cache, resolve to that
       Promise.resolve @data[location]
+    else
+      @query location
 
 
   ##
@@ -100,7 +102,7 @@ class Iroh
 
 
   ## 
-  # Gets all menus in the specified (meal, location) coordinate ranges.
+  # Gets all events in the specified (locations, days) ranges.
   #
   # @param locations    array of locations to query for
   # @return             Promise to massive object. lol.
@@ -122,7 +124,7 @@ class Iroh
         return date_range
       
       console.log 'for each day, get the thing'
-      return Promise.resolve([]);
+      return Promise.resolve([])
 
     # Date range -> Array of date ranges
     if days._type is 'date_range'
@@ -190,7 +192,7 @@ icalchurner = (ical) ->
     timezone        : data.properties["X-WR-TIMEZONE"][0].value
     name            : data.properties["X-WR-CALNAME"][0].value
     description     : data.properties["X-WR-CALDESC"][0].value
-    updated         : (new Date()).valueOf();
+    updated         : (new Date()).valueOf()
     # method        : data.properties["METHOD"][0].value
 
   
@@ -312,7 +314,7 @@ render_calendar = (cal, s, t) ->
         if x.rrule.count
           for_rrule.count = x.rrule.count
         
-        rule = new RRule(for_rrule);
+        rule = new RRule(for_rrule)
 
         evres = rule.between(s, t).forEach (r) ->
 
