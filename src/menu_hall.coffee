@@ -1,8 +1,8 @@
-require './vendor/date_format'
+require '../lib/date_format'
 cheerio = require 'cheerio'
 request = require 'request'
 Promise = require('es6-promise').Promise;
-halls   = require './the_halls'
+halls   = require '../data/halls'
 
 ##
 # Should be a { hall_id : int } map, where int is the id to use in the request

@@ -1,21 +1,23 @@
 require 'datejs'
 rp        = require("request-promise")
-Promise   = require("es6-promise").Promise
 parsecal  = require("icalendar").parse_calendar
 RRule     = require('rrule').RRule
 timespan  = require('timespan')
+Cache     = require('../lib/cache')
+calutil   = require('../lib/calendar_tools')
+
+## Definitions.
 
 dow = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"]
 
-rruleday = {
-  "MO":RRule.MO
-  "TU":RRule.TU
-  "WE":RRule.WE
-  "TH":RRule.TH
-  "FR":RRule.FR
-  "SA":RRule.SA
-  "SU":RRule.SU
-}
+rruleday =
+  "MO" : RRule.MO
+  "TU" : RRule.TU
+  "WE" : RRule.WE
+  "TH" : RRule.TH
+  "FR" : RRule.FR
+  "SA" : RRule.SA
+  "SU" : RRule.SU
 
 typeIsArray = Array.isArray || ( value ) ->
   return {}.toString.call( value ) is '[object Array]'
@@ -49,8 +51,10 @@ class Iroh
   query : (location_id) ->
     self = this
     curr_loc = self.caldb[location_id]
+    
     # return list of dining ids if no location_id is specified
     return Promise.resolve(dining: Object.keys(@caldb)) if not location_id
+   
     # return null if location_id not recognized
     return Promise.resolve(null) if not curr_loc
     
@@ -95,7 +99,7 @@ class Iroh
     end   = Date.parse end   # End date
     
     return {
-      s : start,
+      s : start
       e : end
       _type : 'date_range'
     }
@@ -160,8 +164,7 @@ class Iroh
       console.trace err
 
 
-module.exports = new Iroh(require('./calendars.json'))
-
+module.exports = new Iroh(require('../data/calendars.json'))
 
 
 

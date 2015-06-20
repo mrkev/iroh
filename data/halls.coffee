@@ -1,5 +1,9 @@
+##
+# Interface to interact with the halls object (currently in calendars.json) in
+# a more abstract way. 
+# 
 
-calendars = require './calendars.json'
+calendars = require '../data/calendars.json'
 
 ################################### Helpers. ################################### 
 
@@ -38,10 +42,9 @@ invert_map = (map) ->
     res[map[key]] = key
   return res
 
+
 ################################### Exports. ###################################
 
-##
-# Interface to interact with the halls object (currently in calendars.json).
 module.exports = 
   
   ##
@@ -57,6 +60,11 @@ module.exports =
     invert_map(map_of_property calendars, property)
 
 
+  ##
+  # Returns an array of all halls with a menu
+  with : (p) -> Object.keys(@property p)
+
+  objects : calendars
 
 
 

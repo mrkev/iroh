@@ -1,5 +1,5 @@
 {
-  "name": "Iroh",
+  "name": "iroh",
   "version": "0.1.1",
   "description": "Dining calendars for RedAPI",
   "main": "iroh.js",

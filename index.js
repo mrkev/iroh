@@ -2,8 +2,8 @@
 
 /* global require, module */
 require('coffee-script/register');
-var mm = require('./src_menus.coffee');
-var cm = require('./src_calendars.coffee');
+var mm = require('./src/menu_hall.coffee');
+var cm = require('./src/calendar_hall.coffee');
 
 
 /**
@@ -36,5 +36,5 @@ module.exports = {
     return cm.get_events(locations, dates);
   },
 
-  caldb : require('./calendars.json')
+  caldb : require('./data/calendars.json')
 };

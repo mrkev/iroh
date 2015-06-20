@@ -1,7 +1,6 @@
-fs = require('fs')
-rp = require('request-promise')
-Promise = require("es6-promise").Promise
-cals = require('./calendars.json')
+fs   = require 'fs'
+rp   = require 'request-promise'
+cals = require './data/calendars.json'
 
 require 'datejs'
 
