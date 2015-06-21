@@ -1,4 +1,4 @@
-i [![Build Status](https://travis-ciroh.org/mrkev/iroh.svg?branch=master)](https://travis-ciroh.org/mrkev/i) [![Codacy Badge](https://www.codacy.com/project/badge/f8187d74a6744661b71a66403e81dbd8)](https://www.codacy.com/app/kevin9794/Iroh)
+iroh [![Build Status](https://travis-ciroh.org/mrkev/iroh.svg?branch=master)](https://travis-ci.org/mrkev/iroh) [![Codacy Badge](https://www.codacy.com/project/badge/f8187d74a6744661b71a66403e81dbd8)](https://www.codacy.com/app/kevin9794/Iroh)
 =====
 
 Dining module for RedAPIroh. Can be used to fetch information about Cornell dining calendars on any node.js script.
