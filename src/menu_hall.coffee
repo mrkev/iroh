@@ -1,16 +1,15 @@
 require '../lib/date_format'
 cheerio = require 'cheerio'
 request = require 'request'
-Promise = require('es6-promise').Promise;
 halls   = require '../data/halls'
+Cache   = require '../lib/cacherator'
 
 ##
 # Should be a { hall_id : int } map, where int is the id to use in the request
 # to fetch the menu for that hall.
 menu_locations = halls.property('hall_menu_id')
 
-today = ->
-  return new Date()
+today = -> new Date()
 
 class MenuManager
   constructor: (@uri) ->
