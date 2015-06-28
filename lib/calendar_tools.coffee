@@ -1,5 +1,6 @@
 require 'datejs'
 timespan = require('timespan')
+parsecal = require("icalendar").parse_calendar
 RRule    = require('rrule').RRule
 rruleday =
   "MO" : RRule.MO
@@ -9,6 +10,8 @@ rruleday =
   "FR" : RRule.FR
   "SA" : RRule.SA
   "SU" : RRule.SU
+
+mx = module.exports
 
 ##
 # Floors a date to the lowest midnight
@@ -25,6 +28,70 @@ module.exports.format_yo = (a) ->
          a.substr(11, 2) + ":" + 
          a.substr(13)       \
     else a.substr(6)))
+
+
+##
+# Churns the calendar from a convulted iCalendar file to a JSON object with the
+# information we care about
+# @return JSON object
+module.exports.icalchurner = (ical) ->
+  
+  try
+    data = parsecal(ical)
+  catch error
+    console.log('bro')
+    console.trace error
+    return null
+
+  delete data['calendar']
+
+  # Note: Trying to return the data as is wont work. 
+  # I'm guessing it goes into an infinite loop becasue
+  # data contains circular referece ({ calendar: [Circular] ... })
+  
+  # Get general calendar information
+  cal =
+    events          : []
+    timezone        : data.properties["X-WR-TIMEZONE"][0].value
+    name            : data.properties["X-WR-CALNAME"][0].value
+    description     : data.properties["X-WR-CALDESC"][0].value
+    updated         : (new Date()).valueOf()
+    # method        : data.properties["METHOD"][0].value
+
+  
+  # Loop through and get event's info
+  i = data.components.VEVENT.length - 1
+
+  while i >= 0
+    vevt = data.components.VEVENT[i].properties
+    evt  =
+      start         : Date.parse(vevt.DTSTART[0].value)
+      end           : Date.parse(vevt.DTEND[0].value)
+      summary       : vevt.SUMMARY[0].value
+      # status      : vevt.STATUS[0].value
+      # description : vevt.DESCRIPTION[0].value
+      # timestamp   : vevt.DTSTAMP[0].value
+      # uid         : vevt.UID[0].value
+      # updated     : vevt.CREATED[0].value
+      # modified    : vevt['LAST-MODIFIED'][0].value
+      # location    : vevt.LOCATION[0].value
+      # revisions   : parseInt(vevt.SEQUENCE[0].value)
+      # transparent : vevt.TRANSP[0].value
+    
+    if vevt.RRULE
+      rrule              = vevt.RRULE[0].value
+      evt.rrule          = frequency: rrule.FREQ
+      evt.rrule.weekdays = rrule.BYDAY.split(",")                       if rrule.BYDAY
+      evt.rrule.end      = Date.parse(mx.format_yo(rrule.UNTIL)) if rrule.UNTIL
+      evt.rrule.count    = parseInt(rrule.COUNT)                        if rrule.COUNT
+    
+    if vevt.EXDATE
+      evt.rexcept = Date.parse(vevt.EXDATE[0].value.toString()) 
+    
+    cal.events[i] = evt
+    i--
+  
+  return cal
 
 
 ##
