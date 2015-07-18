@@ -1,4 +1,4 @@
-chai = require 'chai'
+chai    = require 'chai'
 chai.use(require("chai-as-promised"));
 chai.should()
 expect = chai.expect
@@ -41,4 +41,5 @@ describe 'Iroh', ->
       iroh.get_events(['okenshields'], iroh.DATE_RANGE('April 6, 2015', 'April 8, 2015')).then((res) ->
         return res.okenshields.length == 4
       ).should.eventually.equal(true) 
+
   

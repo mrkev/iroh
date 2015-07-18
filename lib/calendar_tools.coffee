@@ -2,6 +2,7 @@ require 'datejs'
 timespan = require('timespan')
 parsecal = require("icalendar").parse_calendar
 RRule    = require('rrule').RRule
+
 rruleday =
   "MO" : RRule.MO
   "TU" : RRule.TU

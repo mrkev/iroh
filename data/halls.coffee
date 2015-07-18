@@ -64,7 +64,7 @@ module.exports =
   # Returns an array of all halls with a menu
   with : (p) -> Object.keys(@property p)
 
-  objects : calendars
+  # objects : calendars
 
 
 
