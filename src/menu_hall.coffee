@@ -3,6 +3,7 @@ cheerio = require 'cheerio'
 request = require 'request'
 halls   = require '../data/halls'
 Cache   = require '../lib/cacherator'
+Promise = require('es6-promise').Promise
 
 ##
 # Should be a { hall_id : int } map, where int is the id to use in the request

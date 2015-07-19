@@ -11,6 +11,7 @@ rp          = require('request-promise')
 parser      = require('xml2json')
 calendars   = require('../data/calendars.json')
 halls       = require '../data/halls'
+Promise     = require('es6-promise').Promise
 
 isArr = Array.isArray || (value) -> 
   return {}.toString.call(value) is '[object Array]'

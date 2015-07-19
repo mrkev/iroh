@@ -3,6 +3,7 @@ rp   = require 'request-promise'
 cals = require './data/calendars.json'
 
 require 'datejs'
+Promise = require('es6-promise').Promise
 
 # https://developers.google.com/apis-explorer/#s/calendar/v3/calendar.events.list
 FRONT_URL = 'https://www.googleapis.com/calendar/v3/calendars/'
