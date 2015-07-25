@@ -8,6 +8,9 @@
 # 
 # lol.
 class Cacherator
+
+  # So user can do Cache.set Cache.FOREVER, '/', {}
+  FOREVER = undefined
   
   ##
   # Return new instance of Cacherator. Useful
@@ -28,21 +31,29 @@ class Cacherator
   ##
   # Removes a single item at @path from the cache. Note, 
   # trailing "/"s matter. Only exact matches are removed.
-  remove : (path) ->
+  del : (path) ->
     delete @cache[key]
 
   ##
   # Puts an item in the cache. Expires after @time
   # milliseconds.
   set : (time, path, data) ->
+    # User can do Cache.set '/', {} to cache for unlimited
+    # time
+    if typeof time is 'string' and typeof path != 'string'
+      path = time
+      data = path
+      time = undefined
+
     self = @
     @cache[path] = {}
     @cache[path].data = data
     @cache[path].created = new Date();
     # console.log @cache
-    @cache[path].timeout = setTimeout(() -> 
-      delete self.cache[path]
-    , time)
+    if typeof time is 'number'
+      @cache[path].timeout = setTimeout ->
+        delete self.cache[path]
+      , time
 
   ##
   # Fetches a single item from the cache.
@@ -76,9 +87,9 @@ if not module.parent
   cache.set 1000, '/sample/data', {a : 1}
   console.log cache.get('/sample/data')
 
-  setTimeout(() -> 
+  setTimeout ->
     console.log cache.get('/sample/data')
-  , 1100)
+  , 1100
 
 # undefined
 # undefined

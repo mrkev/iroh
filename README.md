@@ -5,7 +5,7 @@ Dining module for RedAPIroh. Can be used to fetch information about Cornell dini
 
 ### Installation
 
-    npm install http://github.com/mrkev/Iroh
+    npm install http://github.com/mrkev/iroh
 
 ### Usage
 
