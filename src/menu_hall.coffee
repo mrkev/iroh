@@ -5,6 +5,9 @@ halls   = require '../data/halls'
 Cache   = require '../lib/cacherator'
 Promise = require('es6-promise').Promise
 
+isArr = Array.isArray || (value) ->
+  return {}.toString.call(value) is '[object Array]'
+
 ##
 # Should be a { hall_id : int } map, where int is the id to use in the request
 # to fetch the menu for that hall.
@@ -114,6 +117,27 @@ class MenuManager
           meal : period
           menu : menu_items
 
+  # Reduce...
+  dimentionalize : (key_dim) =>
+    return (menu_object) =>
+
+      # ...with locations as keys
+      if key_dim is @dim_locations()
+        return menu_object.reduce((prev, curr) ->
+          prev[curr.location]            = {} if !prev[curr.location]
+          prev[curr.location][curr.meal] = curr.menu
+          return prev
+        , {})
+
+      # ...with meals as keys
+      if key_dim is @dim_meals()
+        return menu_object.reduce((prev, curr) ->
+          prev[curr.meal]                = {} if !prev[curr.meal]
+          prev[curr.meal][curr.location] = curr.menu
+          return prev
+        , {})
+
+
   ##
   # Gets all menus in the specified (meal, location) coordinate ranges.
   #
@@ -124,7 +148,10 @@ class MenuManager
   # @param do_refresh   Overwrite cache
   # @return Promise to massive object. lol.
   get_menus : (meals, locations, key_dim, do_refresh) ->
-    self = this
+
+    # Accept singles
+    meals     = if not isArr meals then [meals] else meals
+    locations = if not isArr locations then [locations] else locations
 
     # Make it a boolean, cuz why not. Lets be tidy.
     do_refresh = !!do_refresh
@@ -132,35 +159,24 @@ class MenuManager
     # We need something to work with
     return Promise.resolve({}) if !meals or !locations
 
+    # Cross product the dimensions;
+    # a promise for each point
     promises  = []
+    locations.forEach (location) =>
+      meals.forEach (meal) =>
+        promises.push(@get(today(), meal, location, do_refresh))
 
-    # Cross product the dimensions. A promise for each point
-    locations.forEach (location) ->
-      meals.forEach (meal) ->
-        promises.push(self.get(today(), meal, location, do_refresh))
-
+    # Nice to be aware of things
     console.log 'ordering by', key_dim
-    # Reduce...
-    return Promise.all(promises).then (results) ->
-      console.log 'ra DUCE'
-
-      # ...with locations as keys
-      if key_dim is self.dim_locations()
-        return results.reduce((prev, curr) ->
-          prev[curr.location]            = {} if !prev[curr.location]
-          prev[curr.location][curr.meal] = curr.menu
-          return prev
-        , {})
-
-      # ...with meals as keys
-      if key_dim is self.dim_meals()
-        return results.reduce((prev, curr) ->
-          prev[curr.meal]                = {} if !prev[curr.meal]
-          prev[curr.meal][curr.location] = curr.menu
-          return prev
-        , {})
-
-
+    
+    return Promise.all(promises)
+      .then @dimentionalize(key_dim)
+      .catch (err) -> throw err
 
 module.exports = new MenuManager('http://living.sas.cornell.edu/dine/whattoeat/menus.cfm')
+
+if require.main == module
+  iroh = module.exports
+  iroh.get_menus('Dinner', 'okenshields', iroh.dim_meals()).then (res) ->
+    console.log res.Dinner
 

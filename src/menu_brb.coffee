@@ -53,8 +53,6 @@ location_for_id = merge_objects [location_for_id_g, location_for_id_b]
 # Get's the menu for location with special menu id {smid}.
 module.exports.get_menu = (smid) ->
 
-  console.log 'getting', smid
-
   return Promise.resolve({}) if smid is undefined
   # return Promise.resolve({}) if Object.keys(location_for_id).indexOf(smid.toString()) < 0
 
@@ -153,13 +151,8 @@ module.exports.get_menu = (smid) ->
 
 
       .then((json) ->
-
-        console.log 'SUP'
-
         cond = json.root.menu[1].cc.reduce(condiments_reduce, {})
-        console.log 'SUP'
         stat = json.root.menu[0].station.map((x) -> station_map(x, cond))
-        console.log 'SUP'
         return {
           stations : stat
         }
@@ -187,6 +180,16 @@ module.exports.get_menu = (smid) ->
 
 
       ## As of now:
+      #  - name:
+      #    description:
+      #    price:
+      #    extras:
+      #      - name:
+      #        options:
+      #          - name:
+      #    category:
+      # 
+      # aka.
       # [ { name: '18 inch Buffalo Chicken Pizza',
       #   description: 'Thin crust Pizza topped with blue cheese.',
       #   price: 15.99,
@@ -200,12 +203,12 @@ module.exports.get_menu = (smid) ->
       # ... ]
 
 
-      # Add location name and we're done
-      .then((foodz_array) ->
-        final = {}
-        final[location_for_id[smid]] = foodz_array
-        return final
-      )
+      # # Add location name and we're done
+      # .then((foodz_array) ->
+      #   final = {}
+      #   final[location_for_id[smid]] = foodz_array
+      #   return final
+      # )
 
 
 ##
@@ -245,8 +248,6 @@ module.exports.get_central = () ->
       )
     )
 
-# module.exports.get_menu('bear_necessities').then (json) -> console.log(json)
-
 ##
 # Gets the general menus for location with id [location_id].
 # @param  location_id {String}
@@ -265,25 +266,40 @@ module.exports.getJSON = (location_id) ->
     if (general_id is undefined) and (bkfeast_id is undefined)
 
   # Get the menus!
-  menus = [module.exports.get_menu(general_id), module.exports.get_menu(bkfeast_id)]
+  menus = [
+    module.exports.get_menu(general_id), 
+    module.exports.get_menu(bkfeast_id)
+  ]
 
-  # console.log menus
-
-  # Return an object:
-  # hall:
+  # Return an array:
+  # "hall":
   #   general:
+  #     - name:
+  #       description:
+  #       price:
+  #       extras:
+  #         - name:
+  #           options:
+  #             - name:
+  #       category:
   #   breakfast:
   return Promise.all(menus).then (data) ->
-    res = {}
-    res[location_id] = {}
+    data
+    
+    # Don't return empty menus
+    .filter (menu) ->
+      (Object.keys menu).length > 0
 
-    res[location_id].general = data[0] if not (data[0] is {})
-    res[location_id].breakfast = data[1] if not (data[1] is {})
+    # Build standard menu object
+    .map (menu, i) ->
+      location : location_id
+      meal : if i is 0 then 'general' else 'breakfast'
+      menu : menu
 
-    return res
-
-if requre.main = module
-  module.exports.getJSON('goldies').then (data) -> console.dir(data)
+if require.main = module
+  # module.exports.get_menu('bear_necessities').then (json) -> console.log(json)
+  module.exports.getJSON('goldies').then (data) -> 
+    console.log(data)
 
 
 
