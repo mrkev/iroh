@@ -5,7 +5,6 @@ require('coffee-script/register');
 var mm = require('./src/menu_hall.coffee');
 var cm = require('./src/calendar_hall.coffee');
 
-
 /**
  * Main interface for Iroh. 
  * mm = menu manager, for all dining hall menus
@@ -14,9 +13,6 @@ var cm = require('./src/calendar_hall.coffee');
 module.exports = {
   ALL_LOCATIONS : mm.all_locations(),
   ALL_MEALS     : mm.all_meals(),
-
-  DIM_LOCATIONS : mm.dim_locations(),
-  DIM_MEALS     : mm.dim_meals(),
 
   DATE_RANGE    : cm.date_range,
 
