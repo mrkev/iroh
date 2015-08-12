@@ -2,7 +2,6 @@ require '../lib/date_format'
 cheerio = require 'cheerio'
 rp      = require 'request-promise'
 halls   = require '../data/halls'
-Cache   = require '../lib/cacherator'
 Promise = require('es6-promise').Promise
 
 isArr = Array.isArray || (value) ->
@@ -18,7 +17,6 @@ today = -> new Date
 class MenuManager
   constructor: ->
     @uri = 'http://living.sas.cornell.edu/dine/whattoeat/menus.cfm'
-    @cache = {}
     @all_meals     = -> ['Breakfast', 'Lunch', 'Dinner', 'Brunch']
     @all_locations = -> Object.keys(menu_locations)
 
@@ -37,7 +35,7 @@ class MenuManager
   #                   jansens_dining_room_bethe_house, 
   #                   robert_purcell_marketplace_eatery, north_star, 
   #                   risley_dining, 104west, okenshields]
-  get_hall_menu: (date, meal, location, should_refresh) ->
+  get_hall_menu: (date, meal, location) ->
     
     console.log(today(), meal, location)
 
@@ -46,14 +44,6 @@ class MenuManager
 
     # No menu available.
     console.log('No menu available for that location') if loc is null
-
-    # cache key is meal + midnight of date + location + remove whitespace
-    # This ensures we get a new menu every day. Note, it will also mean our
-    # cache will grow quite a bit.
-    key = (meal + date.setHours(0,0,0,0) + location).replace(/\s/g, '')
-
-    # We can do cache! Yay!
-    return Promise.resolve(@cache[key]) if !should_refresh && @cache[key]
 
     # Do the request
     rp.post
@@ -87,9 +77,6 @@ class MenuManager
 
       # Menu items should be the menu by now.
       menu = null if menu.length is 0
-      
-      # Save it in cache
-      @cache[key] = menu
 
       # done.
       return {
@@ -98,47 +85,19 @@ class MenuManager
         location
       }
 
-  ##
-  # Gets all menus in the specified (meal, location) coordinate ranges.
-  #
-  # @param meals        array of meals to query for
-  # @param locations    array of locations to query for
-  # @param key_dim      dimension to reduce on. values from this dimension
-  #                     will be used as top-level key
-  # @param do_refresh   Overwrite cache
-  # @return Promise to massive object. lol.
-  get_menus : (meals, locations, do_refresh) ->
-
-    # Accept singles
-    meals     = if not isArr meals then [meals] else meals
-    locations = if not isArr locations then [locations] else locations
-
-    # Make it a boolean, cuz why not. Lets be tidy.
-    do_refresh = !!do_refresh
-
-    # We need something to work with
-    return Promise.resolve({}) if !meals or !locations
-
-    # Cross product; a promise for each point
-    promises = []
-    locations.forEach (location) =>
-      meals.forEach (meal) =>
-        promises.push(@get_hall_menu(today(), meal, location, do_refresh))
-
-    (Promise.all promises)
-
 module.exports = new MenuManager
 
 ## Test
 if require.main == module
   iroh = module.exports
-  iroh.get_menus('Lunch', 'okenshields', false).then (res) ->
-    console.log res[0]
+  iroh.get_hall_menu('Lunch', 'okenshields').then (res) ->
+    console.log res
 
     ## 
-    # [{ menu:
+    # { menu:
     #    [ { name: 'Homestyle Chicken Noodle Soup',
     #        category: 'Soup Station',
     #        healthy: false }, ...],
     #    meal: 'Lunch',
     #    location: 'okenshields' }
+

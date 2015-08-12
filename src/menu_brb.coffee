@@ -97,8 +97,6 @@ class MenuManager
 
   constructor: ->
     @uri = 'http://living.sas.cornell.edu/dine/whattoeat/menus.cfm'
-    @cache = {}
-    
     @all_meals     = -> ['Breakfast', 'General']
     @all_locations = -> union Object.keys(halls_general), Object.keys(halls_breakfast)
 
@@ -108,13 +106,21 @@ class MenuManager
 
     console.log(today(), meal, location_id)
 
+    res = {
+        meal, 
+        location: location_id
+        menu: null
+      }
+
+    return (Promise.resolve res) if !(meal is 'General') and !(meal is 'Breakfast')
+
     # Which menu id are we talking about?
-    smid = if meal is 'GENERAL' \
+    smid = if meal is 'General' \
       then halls_general[location_id] \
       else halls_breakfast[location_id]
 
     # Nothing or...
-    Promise.resolve({}) if smid is undefined
+    return (Promise.resolve res) if smid is undefined
 
     # ... something! Yeah! Alright first get the xml menu
     rp('https://cornell.webfood.com/xmlstoremenu.dca?s=' + smid)
@@ -166,28 +172,9 @@ class MenuManager
     #  - ...
     
     # Build the final object
-    .then (menu) -> {
-        menu, 
-        meal, 
-        location: location_id
-      }
-
-  get_menus: (meals, locations) ->
-
-    # Accept singles
-    meals     = if not isArr meals then [meals] else meals
-    locations = if not isArr locations then [locations] else locations
-
-    # We need something to work with
-    Promise.resolve({}) if !meals or !locations
-
-    # Cross product; a promise for each point
-    promises = []
-    locations.forEach (location) =>
-      meals.forEach (meal) =>
-        promises.push(@get_brb_menu meal, location)
-
-    (Promise.all promises)
+    .then (menu) -> 
+      res.menu = menu
+      return res
 
 module.exports = new MenuManager
 
@@ -231,7 +218,7 @@ get_central = ->
 
 if require.main == module
   iroh = module.exports
-  iroh.get_menus(['General', 'Breakfast'], 'bear_necessities').then (res) ->
+  iroh.get_brb_menu('General', 'bear_necessities').then (res) ->
     console.log res
 
 

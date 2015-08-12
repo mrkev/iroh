@@ -2,7 +2,7 @@
 
 /* global require, module */
 require('coffee-script/register');
-var mm = require('./src/menu_hall.coffee');
+var mm = require('./src/menu.coffee');
 var cm = require('./src/calendar_hall.coffee');
 
 /**
@@ -24,8 +24,8 @@ module.exports = {
     return cm.getJSON(location);
   }, 
 
-  get_menus   : function (meals, locations, key_dim, do_refresh) {
-    return mm.get_menus(meals, locations, key_dim, do_refresh);
+  get_menus   : function (meals, locations) {
+    return mm.get_menus(meals, locations);
   },
 
   get_events  : function (locations, dates) {
