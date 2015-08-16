@@ -18,8 +18,6 @@ module.exports = {
   DIM_LOCATIONS : mm.dim_locations(),
   DIM_MEALS     : mm.dim_meals(),
 
-  DATE_RANGE    : cm.date_range,
-
   get_calendar_data  : function (location) {
     return cm.getJSON(location);
   }, 

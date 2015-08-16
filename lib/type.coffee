@@ -14,6 +14,9 @@ module.exports.DAYS_OF_WEEK = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"]
 module.exports.is_array = Array.isArray || ( value ) ->
   return {}.toString.call(value) is '[object Array]'
 
+module.exports.is_object = (obj) ->
+  (not obj is null) and typeof obj is 'object'
+
 ################################# CONSTRUCTORS #################################
 
 ##
