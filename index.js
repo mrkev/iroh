@@ -6,8 +6,8 @@ var mm = require('./src/menu.coffee');
 var cm = require('./src/calendar_hall.coffee');
 
 /**
- * Main interface for Iroh. 
- * mm = menu manager, for all dining hall menus
+ * Main interface for Iroh.
+ * mm = menu manager, for all dining menus
  * cm = calendar manager, for all dining hall events
  */
 module.exports = {
@@ -16,15 +16,7 @@ module.exports = {
 
   DATE_RANGE    : cm.date_range,
 
-  get_calendar_data  : function (location) {
-    return cm.getJSON(location);
-  }, 
-
-  getJSON     : function (location) {
-    return cm.getJSON(location);
-  }, 
-
-  get_menus   : function (meals, locations) {
+  get_menus   : function (locations, meals) {
     return mm.get_menus(meals, locations);
   },
 

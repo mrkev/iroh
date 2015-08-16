@@ -27,7 +27,7 @@ class MenuManager
   #    # Note: if 'time' is not a date, it will be set to today.
   # 
   # @return Promise to menus. lol.
-  get_menus: (meals, locations, time) ->
+  get_menus: (locations, meals, time) ->
 
     # Setup the time
     time = today() if not (is_date time) 
@@ -55,6 +55,6 @@ module.exports = new MenuManager
 
 if require.main == module
   iroh = module.exports
-  iroh.get_menus(['Lunch', 'Dinner'], ['okenshields', 'bear_necessities']).then (res) ->
+  iroh.get_menus(['okenshields', 'bear_necessities'], ['Lunch', 'Dinner']).then (res) ->
     console.log res
 
