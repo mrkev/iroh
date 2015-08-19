@@ -7,54 +7,23 @@
 # involved, but as of now worketh, and lest I glad it doest.
 #
 
-rp          = (require 'request-promise')
-parser      = (require 'xml2json')
-calendars   = (require '../data/calendars.json')
-halls       = (require '../data/halls')
-Promise     = (require 'es6-promise').Promise
+rp            = (require 'request-promise')
+parser        = (require 'xml2json')
+calendars     = (require '../data/calendars.json')
+halls         = (require '../data/halls')
+Promise       = (require 'es6-promise').Promise
+merge_objects = (require '../lib/utils').merge_objects
+union         = (require '../lib/utils').union
+isArr         = (require '../lib/type').is_array
 
-isArr = Array.isArray || (value) ->
-  return {}.toString.call(value) is '[object Array]'
-
-
-################################### Helpers. ###################################
-
-##
-# [{a : b}, {c : d}] -> {a : b, c : d}
-merge_objects = (objs) ->
-  c = {}
-  objs.forEach (obj) ->
-    Object.keys(obj).forEach (key) ->
-      c[key] = obj[key]
-  return c
-
-##################################### Maps #####################################
-
-##
-# { general_menu_id : location name }
-location_for_id_g = halls.of_property 'general_menu_id'
-
-##
-# { general_menu_id : location name }
-id_for_location_g = halls.property 'general_menu_id'
-
-location_for_id_b = halls.of_property 'general_menu_id_breakfast'
-id_for_location_b = halls.property 'general_menu_id_breakfast'
-
-
-location_for_id = merge_objects [location_for_id_g, location_for_id_b]
-
-# console.log 'lyo', id_for_location_g
-# console.log 'lyo', id_for_location_b
+today = -> new Date
 
 #################################### Module ####################################
 
-##
-# Get's the menu for location with special menu id {smid}.
-module.exports.get_menu = (smid) ->
+halls_general = halls.property('general_menu_id') # @todo: property exists?
+halls_breakfast = halls.property('general_menu_id_breakfast')
 
-  return Promise.resolve({}) if smid is undefined
-  # return Promise.resolve({}) if Object.keys(location_for_id).indexOf(smid.toString()) < 0
+class MenuManager
 
   ## HELPERS ##
 
@@ -105,10 +74,9 @@ module.exports.get_menu = (smid) ->
   # }
   condiments_reduce = (acc, c) ->
     if (typeof c.cond) is 'string'
-      acc[c.cclass] = {
+      acc[c.cclass] =
         name : c.cond
         options : []
-      }
 
     else
       acc[c.cclass] = {
@@ -125,95 +93,94 @@ module.exports.get_menu = (smid) ->
     return acc
 
 
-  ## ALRIGHT LETS ROLL ##
+  ## THE ACUTAL CLASS ## 
 
-  rp('https://cornell.webfood.com/xmlstoremenu.dca?s=' + smid)
-      .then((xml)->
-        return new Promise((res, rej) ->
-          # XML has more than one root (aka. invalid). Fix by adding a root &
-          # parse.
-          xml  = '<root name="whatup">\n' + xml.replace(/&/g, "+") + '</root>\n'
-          json = parser.toJson(xml)
-          res JSON.parse(json)
+  constructor: ->
+    @uri = 'http://living.sas.cornell.edu/dine/whattoeat/menus.cfm'
+    @all_meals     = -> ['Breakfast', 'General']
+    @all_locations = -> union Object.keys(halls_general), Object.keys(halls_breakfast)
 
-          # console.log xml
+  ##
+  # Gets a single menu for a location.
+  get_brb_menu: (location_id, meal) ->
 
-          # parseString(xml, (err, json) ->
-          #   rej err if err
-          #   res json
-          # )
-        )
-      )
-      .catch((err) ->
-        console.log 'Error with request'
-        console.trace err
-      )
+    console.log(today(), meal, location_id)
 
+    res = {
+        meal, 
+        location: location_id
+        menu: null
+      }
 
-      .then((json) ->
-        cond = json.root.menu[1].cc.reduce(condiments_reduce, {})
-        stat = json.root.menu[0].station.map((x) -> station_map(x, cond))
-        return {
-          stations : stat
-        }
-      )
+    return (Promise.resolve res) if !(meal is 'General') and !(meal is 'Breakfast')
 
-      .catch(console.trace)
+    # Which menu id are we talking about?
+    smid = if meal is 'General' \
+      then halls_general[location_id] \
+      else halls_breakfast[location_id]
 
+    # Nothing or...
+    return (Promise.resolve res) if smid is undefined
 
-      ## As of now, data looks like this:
-      # { stations:
-      # [ { name: 'Liberty Pizza', items: [Object] },
-      #   { name: 'Liberty Calzones', items: [Object] },
-      #   { name: '5 Star Subs', items: [Object] },
-      #   { name: 'Grill', items: [Object] } ] }
+    # ... something! Yeah! Alright first get the xml menu
+    rp('https://cornell.webfood.com/xmlstoremenu.dca?s=' + smid)
+    
+    .catch (e) -> console.log "HTTP request failed.", e
 
-      # Flatten stations
-      .then((json) ->
-        return json.stations.reduce((acc, station) ->
-          return acc.concat(station.items.map (item) ->
-            item.category = station.name
-            return item
-          )
-        , [])
-      )
+    # XML has more than one root (aka. invalid). 
+    # Fix by adding a root, sanitize a bit & parse.
+    .then (xml)-> new Promise (res, rej) ->
+      xml  = '<root name="whatup">\n' + xml.replace(/&/g, "+") + '</root>\n'
+      json = (parser.toJson xml)
+      res (JSON.parse json)
 
+    .catch (e) -> console.log "XML parsing failed.", e
 
-      ## As of now:
-      #  - name:
-      #    description:
-      #    price:
-      #    extras:
-      #      - name:
-      #        options:
-      #          - name:
-      #    category:
-      # 
-      # aka.
-      # [ { name: '18 inch Buffalo Chicken Pizza',
-      #   description: 'Thin crust Pizza topped with blue cheese.',
-      #   price: 15.99,
-      #   extras: [ [Object] ],
-      #   category: 'Liberty Pizza' },
-      # { name: '1/2 Pound Boneless Wings',
-      #   description: 'Served with a side of blue cheese and celery sticks.',
-      #   price: 6.49,
-      #   extras: [ [Object], [Object] ],
-      #   category: 'Liberty Pizza' }
-      # ... ]
+    # get and format the condiments and stations
+    .then (json) ->
+      cond = json.root.menu[1].cc.reduce(condiments_reduce, {})
+      stat = json.root.menu[0].station.map((x) -> station_map(x, cond))
+      (stat)
 
+    .catch (e) -> console.log "Error getting condiments and/or stations", e
 
-      # # Add location name and we're done
-      # .then((foodz_array) ->
-      #   final = {}
-      #   final[location_for_id[smid]] = foodz_array
-      #   return final
-      # )
+    ## As of now, data looks like this:
+    # [ { name: 'Liberty Pizza', items: [Object] },
+    #   { name: 'Liberty Calzones', items: [Object] },
+    #   { name: '5 Star Subs', items: [Object] },
+    #   { name: 'Grill', items: [Object] } ]
 
+    # Flatten the stations
+    .then (stations) ->
+      stations.reduce (acc, station) ->
+        acc.concat station.items.map (item) ->
+          item.category = station.name
+          item
+      , []
+
+    .catch (e) -> console.log "Couldn't flatten the stations", e
+
+    ## Now the data looks like (YAML):
+    #  - name:
+    #    description:
+    #    price:
+    #    extras:
+    #      - name:
+    #        options:
+    #          - name:
+    #    category:
+    #  - ...
+    
+    # Build the final object
+    .then (menu) -> 
+      res.menu = menu
+      return res
+
+module.exports = new MenuManager
 
 ##
 # Gets a list and information for special (non-dining hall) locations.
-module.exports.get_central = () ->
+get_central = ->
   rp('https://cornell.webfood.com/xmlstart.dca')
     .then((xml)->
       return new Promise((res, rej) ->
@@ -248,60 +215,11 @@ module.exports.get_central = () ->
       )
     )
 
-##
-# Gets the general menus for location with id [location_id].
-# @param  location_id {String}
-# @return {Promise} will resolve to an object with format
-# {
-#   general : {Menu} | null
-#   breakfast : {Menu} | null
-# }
-#
-module.exports.getJSON = (location_id) ->
-  general_id = id_for_location_g[location_id]
-  bkfeast_id = id_for_location_b[location_id]
 
-  # This location has no general menus.
-  return Promise.resolve({}) \
-    if (general_id is undefined) and (bkfeast_id is undefined)
-
-  # Get the menus!
-  menus = [
-    module.exports.get_menu(general_id), 
-    module.exports.get_menu(bkfeast_id)
-  ]
-
-  # Return an array:
-  # "hall":
-  #   general:
-  #     - name:
-  #       description:
-  #       price:
-  #       extras:
-  #         - name:
-  #           options:
-  #             - name:
-  #       category:
-  #   breakfast:
-  return Promise.all(menus).then (data) ->
-    data
-    
-    # Don't return empty menus
-    .filter (menu) ->
-      (Object.keys menu).length > 0
-
-    # Build standard menu object
-    .map (menu, i) ->
-      location : location_id
-      meal : if i is 0 then 'general' else 'breakfast'
-      menu : menu
-
-if require.main = module
-  # module.exports.get_menu('bear_necessities').then (json) -> console.log(json)
-  module.exports.getJSON('goldies').then (data) -> 
-    console.log(data)
-
-
+if require.main == module
+  iroh = module.exports
+  iroh.get_brb_menu('bear_necessities', 'General').then (res) ->
+    console.log res
 
 
 

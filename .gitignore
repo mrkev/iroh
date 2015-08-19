@@ -10,3 +10,7 @@ notes
 _out
 _notes
 *.notes.*
+
+
+lib/matches.coffee
+test/model/

@@ -1,182 +1,102 @@
 require '../lib/date_format'
 cheerio = require 'cheerio'
-request = require 'request'
+rp      = require 'request-promise'
 halls   = require '../data/halls'
-Cache   = require '../lib/cacherator'
 Promise = require('es6-promise').Promise
 
 isArr = Array.isArray || (value) ->
   return {}.toString.call(value) is '[object Array]'
 
 ##
-# Should be a { hall_id : int } map, where int is the id to use in the request
+# -> { hall_id : int } map, where int is the id to use in the request
 # to fetch the menu for that hall.
 menu_locations = halls.property('hall_menu_id')
 
-today = -> new Date()
+today = -> new Date
 
 class MenuManager
-  constructor: (@uri) ->
-    @cache = {}
-    @all_meals     = () -> ['Breakfast', 'Lunch', 'Dinner', 'Brunch']
-    @all_locations = () -> Object.keys(menu_locations)
-
-    @dim_meals     = () -> 'MEALS'
-    @dim_locations = () -> 'LOCATIONS'
-
+  constructor: ->
+    @uri = 'http://living.sas.cornell.edu/dine/whattoeat/menus.cfm'
+    @all_meals     = -> ['Breakfast', 'Lunch', 'Dinner', 'Brunch']
+    @all_locations = -> Object.keys(menu_locations)
 
   ### GET MENUS ###
 
-  ## Kudos to Feifran Zhou. He did this.
-  # @param date       A date object.
-  #
-  # @param period     The meal to fetch. One of;
-  #                    - Breakfast
-  #                    - Lunch
-  #                    - Dinner
-  #                    - Brunch
-  #
-  # @param loc        A location id string. One of;
-  #                    - cook_house_dining_room
-  #                    - becker_house_dining_room
-  #                    - keeton_house_dining_room
-  #                    - rose_house_dining_room
-  #                    - jansens_dining_room_bethe_house
-  #                    - robert_purcell_marketplace_eatery
-  #                    - north_star
-  #                    - risley_dining
-  #                    - 104west
-  #                    - okenshields
-  fetch : (date, period, location, should_refresh, callback) ->
+  ##
+  # @param date    Menu for what day?
+  # @param period  The meal to fetch. One of
+  #                > [Breakfast, Lunch, Dinner, Brunch]
+  # @param loc     A location id string. One of
+  #                > [cook_house_dining_room, becker_house_dining_room, 
+  #                   keeton_house_dining_room, rose_house_dining_room, 
+  #                   jansens_dining_room_bethe_house, 
+  #                   robert_purcell_marketplace_eatery, north_star, 
+  #                   risley_dining, 104west, okenshields]
+  get_hall_menu: (location, meal, date) ->
+    
+    console.log(today(), meal, location)
+
+    date = today() if not date
 
     # Alow for straight-up ids
-    if typeof location is 'string'
-      loc = menu_locations[location]
+    loc = menu_locations[location] if typeof location is 'string'
 
     # No menu available.
-    if loc is null
-      console.log('No menu available for that location');
-      callback(null, period, location)
+    console.log('No menu available for that location') if loc is null
 
-    # period + midnight of date + location + remove whitespace
-    key = (period + date.setHours(0,0,0,0) + location).replace(/\s/g, '')
-
-    if @cache[key] != undefined && !should_refresh
-      callback(@cache[key], period, location)
-      return
-
-    request.post({
-      uri: @uri,
-      form: {
-        menudates: date.format('yyyy-mm-dd')
-        menuperiod: period
+    # Do the request
+    rp.post
+      uri: @uri
+      form:
+        menudates: date.format 'yyyy-mm-dd'
+        menuperiod: meal
         menulocations: loc
-      }
-    }, ((err, httpResp, body) ->
 
-      # Nothing here.
-      if err
-        error = new Error()
-        error.name = '503'
-        throw error
-
-      # Parse it through
-      $ = cheerio.load(body)
-      menuItems = []
+    # Throw any errors
+    .catch (err) => throw err
+    
+    # Process results
+    .then (body) =>
+      
+      # Parse it
+      $ = (cheerio.load body)
+      menu = []
       currentCategory = ''
+      
       for sib in $('#menuform').siblings()
         continue unless $(sib).hasClass('menuCatHeader') || $(sib).hasClass('menuItem')
         if $(sib).hasClass('menuCatHeader')
           currentCategory = $(sib).text().trim()
           continue
         isHealthy = $(sib).children().length >= 1
-        menuItems.push({
+        menu.push
           name: $(sib).text().trim()
           category: currentCategory
           healthy: isHealthy
-        })
-      menuItems = null if menuItems.length is 0
-      @cache[key] = menuItems
+
+      # Menu items should be the menu by now.
+      menu = null if menu.length is 0
 
       # done.
-      callback(menuItems, period, location)
-    ).bind(this))
+      return {
+        menu, 
+        meal, 
+        location
+      }
 
-    return null
+module.exports = new MenuManager
 
-
-  ##
-  # fetch(), but promised.
-  get : (date, period, loc, should_refresh) ->
-    self = this
-    console.log(today(), period, loc)
-    return new Promise (resolve, reject) ->
-      self.fetch date, period, loc, should_refresh, (menu_items, period, loc) ->
-        resolve
-          location : loc
-          meal : period
-          menu : menu_items
-
-  # Reduce...
-  dimentionalize : (key_dim) =>
-    return (menu_object) =>
-
-      # ...with locations as keys
-      if key_dim is @dim_locations()
-        return menu_object.reduce((prev, curr) ->
-          prev[curr.location]            = {} if !prev[curr.location]
-          prev[curr.location][curr.meal] = curr.menu
-          return prev
-        , {})
-
-      # ...with meals as keys
-      if key_dim is @dim_meals()
-        return menu_object.reduce((prev, curr) ->
-          prev[curr.meal]                = {} if !prev[curr.meal]
-          prev[curr.meal][curr.location] = curr.menu
-          return prev
-        , {})
-
-
-  ##
-  # Gets all menus in the specified (meal, location) coordinate ranges.
-  #
-  # @param meals        array of meals to query for
-  # @param locations    array of locations to query for
-  # @param key_dim      dimension to reduce on. values from this dimension
-  #                     will be used as top-level key
-  # @param do_refresh   Overwrite cache
-  # @return Promise to massive object. lol.
-  get_menus : (meals, locations, key_dim, do_refresh) ->
-
-    # Accept singles
-    meals     = if not isArr meals then [meals] else meals
-    locations = if not isArr locations then [locations] else locations
-
-    # Make it a boolean, cuz why not. Lets be tidy.
-    do_refresh = !!do_refresh
-
-    # We need something to work with
-    return Promise.resolve({}) if !meals or !locations
-
-    # Cross product the dimensions;
-    # a promise for each point
-    promises  = []
-    locations.forEach (location) =>
-      meals.forEach (meal) =>
-        promises.push(@get(today(), meal, location, do_refresh))
-
-    # Nice to be aware of things
-    console.log 'ordering by', key_dim
-    
-    return Promise.all(promises)
-      .then @dimentionalize(key_dim)
-      .catch (err) -> throw err
-
-module.exports = new MenuManager('http://living.sas.cornell.edu/dine/whattoeat/menus.cfm')
-
+## Test
 if require.main == module
   iroh = module.exports
-  iroh.get_menus('Dinner', 'okenshields', iroh.dim_meals()).then (res) ->
-    console.log res.Dinner
+  iroh.get_hall_menu('okenshields', 'Lunch').then (res) ->
+    console.log res
+
+    ## 
+    # { menu:
+    #    [ { name: 'Homestyle Chicken Noodle Soup',
+    #        category: 'Soup Station',
+    #        healthy: false }, ...],
+    #    meal: 'Lunch',
+    #    location: 'okenshields' }
 

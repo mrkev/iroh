@@ -4,7 +4,7 @@
   "description": "Dining calendars for RedAPI",
   "main": "iroh.js",
   "scripts": {
-    "test": "mocha --compilers coffee:coffee-script/register"
+    "test": "mocha --compilers coffee:coffee-script/register --timeout 5000"
   },
   "repository": {
     "type": "git",
@@ -22,7 +22,8 @@
     "request-promise": "^0.4.1",
     "rrule": "^2.1.0",
     "timespan": "^2.3.0",
-    "xml2js": "^0.4.6"
+    "xml2js": "^0.4.6",
+    "xml2json": "^0.8.2"
   },
   "devDependencies": {
     "chai": "^1.10.0",

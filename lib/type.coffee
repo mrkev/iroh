@@ -11,8 +11,14 @@ module.exports.DAYS_OF_WEEK = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"]
 ##
 # @return true if value is an array,
 # false otherwise
-module.exports.is_array = Array.isArray || ( value ) ->
+module.exports.is_array = Array.isArray || (value) ->
   return {}.toString.call(value) is '[object Array]'
+
+##
+# @return true if value is an array,
+# false otherwise
+module.exports.is_date = 
+  (date) -> date instanceof Date && !(isNaN date.valueOf())
 
 ################################# CONSTRUCTORS #################################
 
