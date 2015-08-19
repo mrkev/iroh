@@ -17,7 +17,7 @@ module.exports = {
   DATE_RANGE    : cm.date_range,
 
   get_menus   : function (locations, meals) {
-    return mm.get_menus(meals, locations);
+    return mm.get_menus(locations, meals);
   },
 
   get_events  : function (locations, dates) {

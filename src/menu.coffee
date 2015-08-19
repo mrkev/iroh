@@ -44,9 +44,9 @@ class MenuManager
     locations.forEach (location) =>
       meals.forEach (meal) =>
         if (is_hall location)
-          promises.push (@hall_manager.get_hall_menu time, meal, location) 
+          promises.push (@hall_manager.get_hall_menu location, meal, time) 
         else
-          promises.push (@brb_manager.get_brb_menu meal, location) 
+          promises.push (@brb_manager.get_brb_menu location, meal) 
 
     (Promise.all promises)
 
@@ -55,6 +55,6 @@ module.exports = new MenuManager
 
 if require.main == module
   iroh = module.exports
-  iroh.get_menus(['okenshields', 'bear_necessities'], ['Lunch', 'Dinner']).then (res) ->
+  iroh.get_menus(['okenshields', 'bear_necessities'], ['Breakfast', 'Dinner']).then (res) ->
     console.log res
 

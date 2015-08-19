@@ -102,7 +102,7 @@ class MenuManager
 
   ##
   # Gets a single menu for a location.
-  get_brb_menu: (meal, location_id) ->
+  get_brb_menu: (location_id, meal) ->
 
     console.log(today(), meal, location_id)
 
@@ -218,7 +218,7 @@ get_central = ->
 
 if require.main == module
   iroh = module.exports
-  iroh.get_brb_menu('General', 'bear_necessities').then (res) ->
+  iroh.get_brb_menu('bear_necessities', 'General').then (res) ->
     console.log res
 
 

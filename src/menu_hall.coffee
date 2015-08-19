@@ -20,9 +20,6 @@ class MenuManager
     @all_meals     = -> ['Breakfast', 'Lunch', 'Dinner', 'Brunch']
     @all_locations = -> Object.keys(menu_locations)
 
-    @dim_meals     = -> 'MEALS'
-    @dim_locations = -> 'LOCATIONS'
-
   ### GET MENUS ###
 
   ##
@@ -35,9 +32,11 @@ class MenuManager
   #                   jansens_dining_room_bethe_house, 
   #                   robert_purcell_marketplace_eatery, north_star, 
   #                   risley_dining, 104west, okenshields]
-  get_hall_menu: (date, meal, location) ->
+  get_hall_menu: (location, meal, date) ->
     
     console.log(today(), meal, location)
+
+    date = today() if not date
 
     # Alow for straight-up ids
     loc = menu_locations[location] if typeof location is 'string'
@@ -90,7 +89,7 @@ module.exports = new MenuManager
 ## Test
 if require.main == module
   iroh = module.exports
-  iroh.get_hall_menu('Lunch', 'okenshields').then (res) ->
+  iroh.get_hall_menu('okenshields', 'Lunch').then (res) ->
     console.log res
 
     ## 
