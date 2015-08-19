@@ -22,16 +22,16 @@ Dining module for RedAPIroh. Can be used to fetch information about Cornell dini
         });
 
 TODO
- - Merge menu_brb to menu data.
- - Move cache management to Cache class.
+ - ~~Merge menu_brb to menu data.~~
+ - ~~Move cache management to Cache class.~~ `Dropped cache support. This is just the fetcher, cache is application-specific`
  - Write /data/menu.coffee
  - Move some of calendar_hall functions to /lib
 
 TODO: 
- - Update readme. So out of date.
- - Add some more tests. 
+ - ~~Update readme. So out of date.~~
+ - Add some more tests. `... lol`
  - Add some more examples.
- - Document a bit more. 
+ - Document a bit more.
  - Check out https://github.com/genkimarshall/bigredapp-android/ 👍🏽
 
 
