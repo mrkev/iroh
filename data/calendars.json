@@ -16,8 +16,7 @@
       "name": "Libe Café",
       "is_dining_hall": false,
 			"coordinates" :"42.448019, -76.484499",
-			"payment": "BRB,cash",
-			"hall_menu_id": null
+			"payment": "BRB,cash"
 		},
 	"atrium_cafe" : 
 		{
@@ -26,8 +25,7 @@
       "name": "Atrium Café",
       "is_dining_hall": false,
 			"coordinates" :"42.446071, -76.483061",
-			"payment": "BRB,cash",
-			"hall_menu_id": null
+			"payment": "BRB,cash"
 		},
 	"bear_necessities" : 
 		{
@@ -37,7 +35,6 @@
       "is_dining_hall": false,
 			"coordinates" :"42.455935, -76.477911",
 			"payment": "BRB,cash",
-			"hall_menu_id": null,
 			"general_menu_id": 1,
 			"general_menu_id_breakfast": 5
 		},
@@ -48,8 +45,7 @@
       "name": "Bear's Den",
       "is_dining_hall": false,
 			"coordinates" :"42.446372, -76.485786",
-			"payment": "BRB,cash",
-			"hall_menu_id": null
+			"payment": "BRB,cash"
 		},
 	"becker_house_dining_room" : 
 		{
@@ -68,8 +64,7 @@
       "name": "Big Red Barn",
       "is_dining_hall": false,
 			"coordinates" :"42.448526, -76.48098",
-			"payment": "",
-			"hall_menu_id": null
+			"payment": ""
 		},
 	"bus_stop_bagels" :
 		{
@@ -78,8 +73,7 @@
       "name": "Bus Stop Bagels",
       "is_dining_hall": false,
 			"coordinates" :"42.448082, -76.479049",
-			"payment": "",
-			"hall_menu_id": null
+			"payment": ""
 		},
 	"cafe_jennie" : 
 		{
@@ -88,8 +82,7 @@
       "name": "Café Jennie",
       "is_dining_hall": false,
 			"coordinates" :"42.446851, -76.484376",
-			"payment": "",
-			"hall_menu_id": null
+			"payment": ""
 		},
 	"carols_cafe" : 
 		{
@@ -98,8 +91,7 @@
       "name": "Carol's Café",
       "is_dining_hall": false,
 			"coordinates" :"42.453117, -76.479864",
-			"payment": "",
-			"hall_menu_id": null
+			"payment": ""
 		},
 	"cascadeli" : 
 		{
@@ -109,7 +101,6 @@
       "is_dining_hall": false,
 			"coordinates" :"42.446689, -76.485679",
 			"payment": "BRB,cash",
-			"hall_menu_id": null,
 			"general_menu_id": 18
 		},
 	"cook_house_dining_room" : 
@@ -129,8 +120,7 @@
       "name": "Cornell Dairy Bar",
       "is_dining_hall": false,
 			"coordinates" :"42.447554, -76.471048",
-			"payment": "",
-			"hall_menu_id": null
+			"payment": ""
 		},
 	"goldies" : 
 		{
@@ -140,7 +130,6 @@
       "is_dining_hall": false,
 			"coordinates" :"42.450394, -76.482096",
 			"payment": "BRB,cash",
-			"hall_menu_id": null,
 			"general_menu_id": 21
 		},
 	"green_dragon" : 
@@ -150,8 +139,7 @@
       "name": "Green Dragon",
       "is_dining_hall": false,
 			"coordinates" :"42.450948, -76.484456",
-			"payment": "BRB,cash",
-			"hall_menu_id": null
+			"payment": "BRB,cash"
 		},
 	"ivy_room" : 
 		{
@@ -160,8 +148,7 @@
       "name": "Ivy Room",
       "is_dining_hall": false,
 			"coordinates" :"42.446372, -76.485786",
-			"payment": "BRB,cash",
-			"hall_menu_id": null
+			"payment": "BRB,cash"
 		},
 	"jansens_dining_room_bethe_house" : 
 		{
@@ -180,8 +167,7 @@
       "name": "Jansen's Market",
       "is_dining_hall": false,
 			"coordinates" :"42.446325, -76.487932",
-			"payment": "",
-			"hall_menu_id": null
+			"payment": ""
 		},
 	"keeton_house_dining_room" : 
 		{
@@ -201,7 +187,6 @@
       "is_dining_hall": false,
 			"coordinates" :"42.449903, -76.479092",
 			"payment": "BRB,cash",
-			"hall_menu_id": null,
 			"general_menu_id_breakfast": 3,
 			"general_menu_id": 2
 		},
@@ -213,7 +198,6 @@
       "is_dining_hall": false,
 			"coordinates" :"42.444805, -76.482589",
 			"payment": "BRB,cash",
-			"hall_menu_id": null,
 			"general_menu_id": 14
 		},
 	"north_star" : 
@@ -273,8 +257,7 @@
       "name": "Rusty's",
       "is_dining_hall": false,
 			"coordinates" :"42.447116, -76.482031",
-			"payment": "BRB,cash",
-			"hall_menu_id": null
+			"payment": "BRB,cash"
 		},
 	"sweet_sensations" :
 		{
@@ -283,8 +266,7 @@
       "name": "Sweet Sensations",
       "is_dining_hall": false,
 			"coordinates" :"42.453608, -76.476345",
-			"payment": "",
-			"hall_menu_id": null
+			"payment": ""
 		},
 	"synapsis_cafe" : 
 		{
@@ -294,7 +276,6 @@
       "is_dining_hall": false,
 			"coordinates" :"42.446863, -76.477311",
 			"payment": "BRB,cash",
-			"hall_menu_id": null,
 			"general_menu_id": 16
 		},
 	"trillium" : 
@@ -304,7 +285,6 @@
       "name": "Trillium",
       "is_dining_hall": false,
 			"coordinates" :"42.4470972, -76.4821258",
-			"payment": "BRB,cash",
-			"hall_menu_id": null
+			"payment": "BRB,cash"
 		}
 }

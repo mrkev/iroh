@@ -4,6 +4,7 @@
 # 
 
 calendars = require '../data/calendars.json'
+util      = require '../lib/utils.coffee'
 
 ################################### Helpers. ################################### 
 
@@ -66,6 +67,25 @@ module.exports =
 
   # objects : calendars
 
+  ##
+  #
+  all : (type) -> switch type
+    when 'halls'
+      @with 'hall_menu_id'
 
+    when 'brbs'
+      util.union (@with 'general_menu_id'), (@with 'general_menu_id_breakfast')
+
+    when 'brbs_breakfast'
+      @with 'general_menu_id_breakfast'
+
+    when 'brbs_general'
+      @with 'general_menu_id'
+
+    when 'eateries'
+      util.union (@with 'hall_menu_id'),
+        (util.union (@with 'general_menu_id'), 
+          (@with 'general_menu_id_breakfast'))
+        
 
 
