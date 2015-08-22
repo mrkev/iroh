@@ -8,7 +8,7 @@
 #
 
 rp            = (require 'request-promise')
-parser        = (require 'xml2json')
+parse         = (require 'xml2js').parseString
 calendars     = (require '../data/calendars.json')
 halls         = (require '../data/halls')
 Promise       = (require 'es6-promise').Promise
@@ -47,10 +47,10 @@ class MenuManager
     station.item = [station.item] if not isArr station.item
     station.items = station.item.map((i) ->   # Fix items
       res = {
-        name : i.idesc
+        name        : i.idesc
         description : i.ifdesc
-        price : i.icost
-        extras : condimentify(i.icond, condiments)
+        price       : (parseFloat i.icost)
+        extras      : condimentify(i.icond, condiments)
         # igroup : i.igroup
         # iid : i.iid
         # extra : i.iextra
@@ -131,15 +131,23 @@ class MenuManager
     # Fix by adding a root, sanitize a bit & parse.
     .then (xml)-> new Promise (res, rej) ->
       xml  = '<root name="whatup">\n' + xml.replace(/&/g, "+") + '</root>\n'
-      json = (parser.toJson xml)
-      res (JSON.parse json)
+
+      parse xml, {mergeAttrs : true, explicitArray : false}, (err, result) ->
+        rej err if err
+        res result
 
     .catch (e) -> console.log "XML parsing failed.", e
 
     # get and format the condiments and stations
     .then (json) ->
+      json.root.menu = [json.root.menu] if not isArr json.root.menu
+      json.root.menu.map (x) ->
+        x.cc      = [x.cc]      if not isArr x.cc
+        x.station = [x.station] if not isArr x.station
+        x
+
       cond = json.root.menu[1].cc.reduce(condiments_reduce, {})
-      stat = json.root.menu[0].station.map((x) -> station_map(x, cond))
+      stat = json.root.menu[0].station.map((x) -> station_map x, cond)
       (stat)
 
     .catch (e) -> console.log "Error getting condiments and/or stations", e

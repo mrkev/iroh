@@ -27,13 +27,13 @@ class MenuManager
   # @param period  The meal to fetch. One of
   #                > [Breakfast, Lunch, Dinner, Brunch]
   # @param loc     A location id string. One of
-  #                > [cook_house_dining_room, becker_house_dining_room, 
-  #                   keeton_house_dining_room, rose_house_dining_room, 
-  #                   jansens_dining_room_bethe_house, 
-  #                   robert_purcell_marketplace_eatery, north_star, 
+  #                > [cook_house_dining_room, becker_house_dining_room,
+  #                   keeton_house_dining_room, rose_house_dining_room,
+  #                   jansens_dining_room_bethe_house,
+  #                   robert_purcell_marketplace_eatery, north_star,
   #                   risley_dining, 104west, okenshields]
   get_hall_menu: (location, meal, date) ->
-    
+
     console.log(today(), meal, location)
 
     date = today() if not date
@@ -54,15 +54,15 @@ class MenuManager
 
     # Throw any errors
     .catch (err) => throw err
-    
+
     # Process results
     .then (body) =>
-      
+
       # Parse it
       $ = (cheerio.load body)
       menu = []
       currentCategory = ''
-      
+
       for sib in $('#menuform').siblings()
         continue unless $(sib).hasClass('menuCatHeader') || $(sib).hasClass('menuItem')
         if $(sib).hasClass('menuCatHeader')
@@ -79,8 +79,8 @@ class MenuManager
 
       # done.
       return {
-        menu, 
-        meal, 
+        menu,
+        meal,
         location
       }
 
@@ -92,7 +92,7 @@ if require.main == module
   iroh.get_hall_menu('okenshields', 'Lunch').then (res) ->
     console.log res
 
-    ## 
+    ##
     # { menu:
     #    [ { name: 'Homestyle Chicken Noodle Soup',
     #        category: 'Soup Station',
