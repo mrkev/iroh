@@ -104,5 +104,6 @@ module.exports =
         (util.union (@with 'general_menu_id'), 
           (@with 'general_menu_id_breakfast'))
     else
-      calendars        
+      (Object.keys calendars).map (x) ->
+        merge {id : x}, calendars[x]
 
