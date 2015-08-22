@@ -3,8 +3,25 @@
 # a more abstract way. 
 # 
 
-calendars = require '../data/calendars.json'
-util      = require '../lib/utils.coffee'
+merge = ->
+  return (Array::slice.call arguments).reduce((acc, incoming) ->
+    switch typeof incoming
+      when 'object'
+        (Object.keys incoming).forEach (key) ->
+          if acc[key]
+            acc[key] = merge acc[key], incoming[key]
+          else
+            acc[key] = incoming[key]
+        acc
+      else
+        console.log "overwriting on caldb #{incoming}"
+        acc
+  , {})
+
+calendars = merge (require '../data/calendars.json'), 
+                  (require '../data/descriptions.json')
+
+util = (require '../lib/utils.coffee')
 
 ################################### Helpers. ################################### 
 
@@ -86,6 +103,6 @@ module.exports =
       util.union (@with 'hall_menu_id'),
         (util.union (@with 'general_menu_id'), 
           (@with 'general_menu_id_breakfast'))
-        
-
+    else
+      calendars        
 

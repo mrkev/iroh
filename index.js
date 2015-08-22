@@ -15,6 +15,7 @@ module.exports = {
   ALL_LOCATIONS       : dm.all('eateries'),
   ALL_HALLS           : dm.all('halls'),
   ALL_BRBS            : dm.all('brbs'),
+  ALL                 : dm.all(),
 
   ALL_MEALS     : mm.all_meals(),
 
