@@ -44,16 +44,29 @@ class MenuManager
     # No menu available.
     console.log('No menu available for that location') if loc is null
 
+    # Goddamnit cornell.
+    # Apparently they are using AWS Sticky load balancing.
+    # Idk how long this is gonna work before we need to
+    # use like a headless browser or something.
+    #
+    # Or acutally, I think request supports cookie jars.
+    # Maybe we would just have to request the landing page
+    # first, get the cookie, and move forward.
+    cookie = "AWSELB=957D09DF1C0424879E70A279FE7B5867F429E80A31A901AA4709C33F1FFBAA451F1515F44944B200AC0BE8E2F498E9FA5448EABEAF77C24236BD3F64A4CA4636BD695C3C7B;"
+
     # Do the request
     rp.post
       uri: @uri
+      headers:
+        'Cookie' : cookie
       form:
         menudates: date.format 'yyyy-mm-dd'
         menuperiod: meal
         menulocations: loc
 
     # Throw any errors
-    .catch (err) => throw err
+    .catch (err) =>
+      throw err
 
     # Process results
     .then (body) =>
