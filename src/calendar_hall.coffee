@@ -120,7 +120,7 @@ class Iroh
     ## Get our calendars
 
     locations = locations.map (loc) -> self.getJSON(loc)
-    results = {}
+    results = []
 
     return Promise.all(locations).then((res) ->
 
@@ -130,14 +130,20 @@ class Iroh
         loc_id = loc.location_id
 
         rendered = []
+
+        # Render our calendars
         days.forEach (range) ->
           try
             rendered = rendered.concat(cal_tools.render_calendar events, range.s, range.e)
           catch e
             console.trace e
 
+        rendered.forEach (x) ->
+          x.location = loc_id
+          results.push(x)
 
-        results[loc_id] = rendered
+
+        # results[loc_id] = rendered
 
       return results
     )
