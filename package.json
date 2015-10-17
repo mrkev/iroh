@@ -1,5 +1,5 @@
 {
-  "name": "iroh",
+  "name": "cornell-dining",
   "version": "0.2.0",
   "description": "Dining calendars for RedAPI",
   "main": "iroh.js",
