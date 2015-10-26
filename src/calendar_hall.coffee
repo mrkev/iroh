@@ -2,7 +2,7 @@ rp         = require 'request-promise'
 Cache      = require '../lib/cacherator'
 cal_tools  = require '../lib/calendar_tools'
 type       = require '../lib/type'
-calendars  = require '../data/calendars.json'
+loc_db     = require '../data/halls'
 Promise    = require('es6-promise').Promise
 
 MS_ONE_DAY = 86400000
@@ -152,4 +152,4 @@ class Iroh
       console.trace err
 
 
-module.exports = new Iroh(calendars)
+module.exports = new Iroh(loc_db.all())

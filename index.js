@@ -12,22 +12,22 @@ var dm = require('./data/halls.coffee')
  * cm = calendar manager, for all dining hall events
  */
 module.exports = {
-  ALL_LOCATIONS       : dm.all('eateries'),
-  ALL_HALLS           : dm.all('halls'),
-  ALL_BRBS            : dm.all('brbs'),
-  ALL                 : dm.all(),
+  ALL_LOCATIONS : dm.all('eateries'),
+  ALL_HALLS     : dm.all('halls'),
+  ALL_BRBS      : dm.all('brbs'),
+  ALL           : dm.all(),
 
   ALL_MEALS     : mm.all_meals(),
 
   DATE_RANGE    : cm.date_range,
 
-  get_menus   : function (locations, meals) {
+  with          : dm.all,
+
+  get_menus     : function (locations, meals) {
     return mm.get_menus(locations, meals);
   },
 
-  get_events  : function (locations, dates) {
+  get_events    : function (locations, dates) {
     return cm.get_events(locations, dates);
-  },
-
-  caldb : require('./data/calendars.json')
+  }  
 };

@@ -1,5 +1,7 @@
 iroh = (require "./index")
 
+console.log iroh.DATE_RANGE('April 6, 2015', 'April 8, 2015')
+
 iroh
   .get_events ['okenshields'], iroh.DATE_RANGE('April 6, 2015', 'April 8, 2015')
   .then (res) ->

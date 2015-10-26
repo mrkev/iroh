@@ -18,8 +18,9 @@ merge = ->
         acc
   , {})
 
-calendars = merge (require '../data/calendars.json'), 
-                  (require '../data/descriptions.json')
+calendars = merge (require '../data/db_calendars.json'), 
+                  (require '../data/db_descriptions.json'),
+                  (require '../data/db_flags.json')
 
 util = (require '../lib/utils.coffee')
 
@@ -79,7 +80,7 @@ module.exports =
 
 
   ##
-  # Returns an array of all halls with a menu
+  # Returns an array of all halls with a property
   with : (p) -> Object.keys(@property p)
 
   # objects : calendars
@@ -98,6 +99,9 @@ module.exports =
 
     when 'brbs_general'
       @with 'general_menu_id'
+
+    when 'west'
+      @with 'is_west'
 
     when 'eateries'
       util.union (@with 'hall_menu_id'),

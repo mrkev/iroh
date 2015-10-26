@@ -9,7 +9,6 @@
 
 rp            = (require 'request-promise')
 parse         = (require 'xml2js').parseString
-calendars     = (require '../data/calendars.json')
 halls         = (require '../data/halls')
 Promise       = (require 'es6-promise').Promise
 merge_objects = (require '../lib/utils').merge_objects
