@@ -11,7 +11,6 @@ describe 'call_db', ->
 
   it 'exists', -> expect(iroh.caldb).to.exist
 
-
 describe 'get_menus', ->
 
   it 'exists', -> expect(iroh.get_menus).to.exist
@@ -31,5 +30,5 @@ describe 'get_menus', ->
   
     it 'should not include end date on range: [s..t)', ->
       iroh.get_events ['okenshields'], iroh.DATE_RANGE('April 6, 2015', 'April 8, 2015')
-      .then (res) -> res.okenshields.length == 4
+      .then (res) -> res.length == 4
       .should.eventually.equal true 
