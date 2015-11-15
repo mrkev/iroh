@@ -6,11 +6,6 @@ chai.use (require "chai-as-promised")
 chai.should()
 expect = chai.expect
 
-
-describe 'call_db', ->
-
-  it 'exists', -> expect(iroh.caldb).to.exist
-
 describe 'get_menus', ->
 
   it 'exists', -> expect(iroh.get_menus).to.exist

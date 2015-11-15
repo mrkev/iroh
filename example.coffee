@@ -1,23 +1,13 @@
 iroh = (require "./index")
 
-console.log iroh.DATE_RANGE('April 6, 2015', 'April 8, 2015')
+### Uncomment examples below and run to see whats up kthx ### 
 
-iroh
-  .get_events ['okenshields'], iroh.DATE_RANGE('April 6, 2015', 'April 8, 2015')
-  .then (res) ->
-    console.log res
+# console.log iroh.DATE_RANGE('April 6, 2015', 'April 8, 2015')
 
-# [ { summary: 'Open until 2:30pm',
-#     start: Mon Apr 06 2015 11:00:00 GMT-0400 (EDT),
-#     end: Mon Apr 06 2015 14:30:00 GMT-0400 (EDT) },
-#   { summary: 'Open until 2:30pm',
-#     start: Tue Apr 07 2015 11:00:00 GMT-0400 (EDT),
-#     end: Tue Apr 07 2015 14:30:00 GMT-0400 (EDT) },
-#   { summary: 'Dinner served until 7:30pm',
-#     start: Mon Apr 06 2015 16:30:00 GMT-0400 (EDT),
-#     end: Mon Apr 06 2015 19:30:00 GMT-0400 (EDT) },
-#   { summary: 'Dinner served until 7:30pm',
-#     start: Tue Apr 07 2015 16:30:00 GMT-0400 (EDT),
+# iroh
+#   .get_events ['okenshields'], iroh.DATE_RANGE('April 6, 2015', 'April 8, 2015')
+#   .then (res) ->
+#     console.log res
 
 # iroh
 #   .get_menus ['okenshields', 'north_star'], ['Breakfast']
