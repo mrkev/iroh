@@ -6,8 +6,15 @@ union     = (require '../lib/utils').union
 is_array  = (require '../lib/type').is_array
 is_date   = (require '../lib/type').is_date
 not_halls = (require '../src/menu_brb').all_locations()
-is_hall   = (id) -> (not_halls.indexOf id) is -1
+all_halls = (require '../data/halls').all('halls');
+all_brbs  = (require '../data/halls').all('brbs');
+
+is_hall   = (id) -> (all_halls.indexOf id) > 0
+is_brb    = (id) -> (all_brbs.indexOf id) > 0
+
 today     = -> new Date
+
+empty_menu = (location, meal) -> { location, meal, menu: [] }
 
 class MenuManager
 
@@ -45,9 +52,10 @@ class MenuManager
       meals.forEach (meal) =>
         if (is_hall location)
           promises.push (@hall_manager.get_hall_menu location, meal, time) 
-        else
+        else if (is_brb location)
           promises.push (@brb_manager.get_brb_menu location, meal) 
-
+        else
+          promises.push Promise.resolve (empty_menu location, meal)
     (Promise.all promises)
 
   
@@ -55,6 +63,6 @@ module.exports = new MenuManager
 
 if require.main == module
   iroh = module.exports
-  iroh.get_menus(['okenshields', 'bear_necessities'], ['Breakfast', 'Dinner']).then (res) ->
+  iroh.get_menus(['okenshields', 'bear_necessities', 'oy'], ['Breakfast', 'Dinner']).then (res) ->
     console.log res
 

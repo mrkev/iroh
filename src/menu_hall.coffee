@@ -42,7 +42,7 @@ class MenuManager
     loc = menu_locations[location] if typeof location is 'string'
 
     # No menu available.
-    console.log('No menu available for that location') if loc is null
+    console.log('No menu available for that location') if not loc
 
     # Goddamnit cornell.
     # Apparently they are using AWS Sticky load balancing.
