@@ -14,20 +14,20 @@
   "license": "MIT",
   "dependencies": {
     "cheerio": "^0.19.0",
-    "coffee-script": "^1.8.0",
+    "coffee-script": "^1.10.0",
     "datejs": "^1.0.0-rc3",
-    "es6-promise": "^2.3.0",
+    "es6-promise": "^3.0.2",
     "icalendar": "^0.7.1",
     "isita": "0.0.1",
-    "request-promise": "^0.4.1",
+    "request-promise": "^1.0.2",
     "rrule": "^2.1.0",
     "timespan": "^2.3.0",
     "xml2js": "^0.4.6"
   },
   "devDependencies": {
-    "chai": "^1.10.0",
-    "chai-as-promised": "^4.1.1",
+    "chai": "^3.4.1",
+    "chai-as-promised": "^5.1.0",
     "mocha": "^2.0.1",
-    "should": "^4.3.0"
+    "should": "^7.1.1"
   }
 }
