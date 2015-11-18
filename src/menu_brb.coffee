@@ -10,10 +10,10 @@
 rp            = (require 'request-promise')
 parse         = (require 'xml2js').parseString
 halls         = (require '../data/halls')
-Promise       = (require 'es6-promise').Promise
 merge_objects = (require '../lib/utils').merge_objects
 union         = (require '../lib/utils').union
 isArr         = (require '../lib/type').is_array
+Promise       = (require 'es6-promise').Promise
 
 today = -> new Date
 
@@ -44,7 +44,10 @@ class MenuManager
     delete station.type                       # Remove useless info
 
     station.item = [station.item] if not isArr station.item
-    station.items = station.item.map((i) ->   # Fix items
+    
+    station.items = station.item
+    .filter (x) -> !!x
+    .map((i) ->   # Fix items
       res = {
         name        : i.idesc
         description : i.ifdesc
@@ -103,8 +106,6 @@ class MenuManager
   # Gets a single menu for a location.
   get_brb_menu: (location_id, meal) ->
 
-    console.log(today(), meal, location_id)
-
     res = {
         meal, 
         location: location_id
@@ -122,21 +123,25 @@ class MenuManager
     return (Promise.resolve res) if smid is undefined
 
     # ... something! Yeah! Alright first get the xml menu
-    rp('https://cornell.webfood.com/xmlstoremenu.dca?s=' + smid)
+    durl = 'https://cornell.webfood.com/xmlstoremenu.dca?s=' + smid
+    return rp(durl)
     
-    .catch (e) -> console.log "HTTP request failed.", e
+    # Catch needs these parens, else the then chain is broken
+    # for some reason.
+    .catch((e) -> throw new Error ("HTTP request to brbmenus failed." + e))
 
+  
     # XML has more than one root (aka. invalid). 
     # Fix by adding a root, sanitize a bit & parse.
-    .then (xml)-> new Promise (res, rej) ->
+    .then (xml) -> new Promise (res, rej) ->
       xml  = '<root name="whatup">\n' + xml.replace(/&/g, "+") + '</root>\n'
-
+  
       parse xml, {mergeAttrs : true, explicitArray : false}, (err, result) ->
         rej err if err
         res result
-
-    .catch (e) -> console.log "XML parsing failed.", e
-
+  
+    .catch((e) -> throw new Error ("XML parsing of brbmenus failed." + e))
+  
     # get and format the condiments and stations
     .then (json) ->
       json.root.menu = [json.root.menu] if not isArr json.root.menu
@@ -144,19 +149,19 @@ class MenuManager
         x.cc      = [x.cc]      if not isArr x.cc
         x.station = [x.station] if not isArr x.station
         x
-
+  
       cond = json.root.menu[1].cc.reduce(condiments_reduce, {})
       stat = json.root.menu[0].station.map((x) -> station_map x, cond)
       (stat)
-
-    .catch (e) -> console.log "Error getting condiments and/or stations", e
-
+  
+    .catch((e) -> throw new Error ("Error getting condiments and/or stations\n" + e))
+  
     ## As of now, data looks like this:
     # [ { name: 'Liberty Pizza', items: [Object] },
     #   { name: 'Liberty Calzones', items: [Object] },
     #   { name: '5 Star Subs', items: [Object] },
     #   { name: 'Grill', items: [Object] } ]
-
+  
     # Flatten the stations
     .then (stations) ->
       stations.reduce (acc, station) ->
@@ -164,9 +169,11 @@ class MenuManager
           item.category = station.name
           item
       , []
-
-    .catch (e) -> console.log "Couldn't flatten the stations", e
-
+  
+    .catch((e) -> 
+      throw new Error("Couldn't flatten the stations for #{location_id} #{meal}\n" + e)
+    )
+  
     ## Now the data looks like (YAML):
     #  - name:
     #    description:
@@ -189,6 +196,9 @@ module.exports = new MenuManager
 # Gets a list and information for special (non-dining hall) locations.
 get_central = ->
   rp('https://cornell.webfood.com/xmlstart.dca')
+    .catch((e) ->
+      throw new Error('Error getting central xml' + e)
+    )
     .then((xml)->
       return new Promise((res, rej) ->
 
@@ -199,8 +209,9 @@ get_central = ->
 
       )
     )
-    .catch(console.trace)
-
+    .catch((e) ->
+      throw new Error('Error converting central XML to JSON' + e)
+    )
     .then((json) ->
 
       # 0 : config
@@ -218,7 +229,6 @@ get_central = ->
           message : item.smsg
           misc : item.saddr
         }
-
       )
     )
 
@@ -227,6 +237,7 @@ if require.main == module
   iroh = module.exports
   iroh.get_brb_menu('bear_necessities', 'General').then (res) ->
     console.log res
+
 
 
 

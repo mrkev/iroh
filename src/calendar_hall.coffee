@@ -77,7 +77,6 @@ get_events = (locations, days) ->
         e : (Date.parse d).add(1).days()
       return date_range
 
-    console.log 'for each day, get the thing'
     return Promise.resolve([])
 
   # Date range -> Array of date ranges
@@ -105,7 +104,7 @@ get_events = (locations, days) ->
         try
           rendered = rendered.concat(cal_tools.render_calendar events, range.s, range.e)
         catch e
-          console.trace e
+          throw new Error('Error rendering calendars!' + e)
 
       rendered.forEach (x) ->
         x.location = loc_id

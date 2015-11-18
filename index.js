@@ -4,7 +4,7 @@
 require('coffee-script/register');
 var mm = require('./src/menu.coffee');
 var cm = require('./src/calendar_hall.coffee');
-var dm = require('./data/halls.coffee')
+var dm = require('./data/halls.coffee');
 
 /**
  * Main interface for Iroh.

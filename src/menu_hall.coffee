@@ -32,9 +32,13 @@ class MenuManager
   #                   jansens_dining_room_bethe_house,
   #                   robert_purcell_marketplace_eatery, north_star,
   #                   risley_dining, 104west, okenshields]
+  #
+  # (String, String, Date) -> Promise of {
+  #   menu: Option menu[] # Null if not available/invalid
+  #   meal: String
+  #   locaiton: String
+  # }
   get_hall_menu: (location, meal, date) ->
-
-    console.log(today(), meal, location)
 
     date = today() if not date
 
@@ -42,7 +46,11 @@ class MenuManager
     loc = menu_locations[location] if typeof location is 'string'
 
     # No menu available.
-    console.log('No menu available for that location') if not loc
+    return Promise.resolve({
+      menu : null,
+      meal,
+      location
+    }) if not loc
 
     # Goddamnit cornell.
     # Apparently they are using AWS Sticky load balancing.
@@ -53,7 +61,7 @@ class MenuManager
     # Maybe we would just have to request the landing page
     # first, get the cookie, and move forward.
     cookie = "AWSELB=957D09DF1C0424879E70A279FE7B5867F429E80A31A901AA4709C33F1FFBAA451F1515F44944B200AC0BE8E2F498E9FA5448EABEAF77C24236BD3F64A4CA4636BD695C3C7B;"
-
+    
     # Do the request
     rp.post
       uri: @uri
@@ -66,7 +74,7 @@ class MenuManager
 
     # Throw any errors
     .catch (err) =>
-      throw err
+      throw new Error("Request error on menu for #{meal} #{date}" + err)
 
     # Process results
     .then (body) =>
